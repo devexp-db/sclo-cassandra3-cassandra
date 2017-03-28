@@ -1,6 +1,16 @@
-diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
---- cassandra-cassandra-3.9/build.xml	2016-11-30 11:59:19.400942783 +0100
-+++ cassandra-cassandra-3.9new/build.xml	2016-12-01 10:49:05.383549756 +0100
+From de036200face11b9971f55fc1c2ff53dc63383a1 Mon Sep 17 00:00:00 2001
+From: Tomas Repik <trepik@redhat.com>
+Date: Mon, 27 Mar 2017 08:23:29 +0200
+Subject: [PATCH] refine build patch
+
+---
+ build.xml | 42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
+
+diff --git a/build.xml b/build.xml
+index 1393a8a..65fbe8b 100644
+--- a/build.xml
++++ b/build.xml
 @@ -17,7 +17,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
@@ -10,7 +20,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
           xmlns:artifact="antlib:org.apache.maven.artifact.ant">
      <property environment="env"/>
      <property file="build.properties" />
-@@ -76,7 +76,7 @@
+@@ -73,7 +73,7 @@
      <condition property="version" value="${base.version}">
        <isset property="release"/>
      </condition>
@@ -19,17 +29,17 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
      <property name="version.properties.dir"
                value="${build.src.resources}/org/apache/cassandra/config/" />
      <property name="final.name" value="${ant.project.name}-${version}"/>
-@@ -173,7 +173,8 @@
+@@ -169,7 +169,8 @@
          windowtitle="${ant.project.name} API" classpathref="cassandra.classpath"
          bottom="Copyright &amp;copy; ${YEAR} The Apache Software Foundation"
          useexternalfile="yes"
 -        maxmemory="256m">
 +        maxmemory="256m"
-+	encoding="utf-8">
++        encoding="utf-8">
          <filesets/>
        </javadoc>
      </sequential>
-@@ -224,7 +225,7 @@
+@@ -219,7 +220,7 @@
      <target name="gen-cql3-grammar" depends="check-gen-cql3-grammar" unless="cql3current">
        <echo>Building Grammar ${build.src.antlr}/Cql.g  ...</echo>
        <java classname="org.antlr.Tool"
@@ -38,7 +48,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
              fork="true"
              failonerror="true">
           <jvmarg value="-Xmx512M" />
-@@ -267,7 +268,7 @@
+@@ -262,7 +263,7 @@
          grammar files
      -->
      <target name="generate-jflex-java" description="Generate Java from jflex grammar">
@@ -47,19 +57,16 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
          <jflex file="${build.src.java}/org/apache/cassandra/index/sasi/analyzer/StandardTokenizerImpl.jflex" destdir="${build.src.gen-java}/" />
      </target>
  
-@@ -383,9 +384,8 @@
+@@ -378,7 +379,7 @@
            <dependency groupId="org.codehaus.jackson" artifactId="jackson-core-asl" version="1.9.2"/>
            <dependency groupId="org.codehaus.jackson" artifactId="jackson-mapper-asl" version="1.9.2"/>
            <dependency groupId="com.googlecode.json-simple" artifactId="json-simple" version="1.1"/>
 -          <dependency groupId="com.boundary" artifactId="high-scale-lib" version="1.0.6"/>
--          <dependency groupId="com.github.jbellis" artifactId="jamm" version="0.3.0"/>
--	
-+	  <dependency groupId="com.github.stephenc.high-scale-lib" artifactId="high-scale-lib" version="1.0.6"/>         
-+	  <dependency groupId="com.github.jbellis" artifactId="jamm" version="0.3.0"/>
-           <dependency groupId="com.thinkaurelius.thrift" artifactId="thrift-server" version="0.3.7">
-             <exclusion groupId="org.slf4j" artifactId="slf4j-log4j12"/>
-             <exclusion groupId="junit" artifactId="junit"/>
-@@ -398,7 +398,7 @@
++          <dependency groupId="com.github.stephenc.high-scale-lib" artifactId="high-scale-lib" version="1.0.6"/>
+           <dependency groupId="com.github.jbellis" artifactId="jamm" version="0.3.0"/>
+ 	
+           <dependency groupId="org.yaml" artifactId="snakeyaml" version="1.11"/>
+@@ -386,7 +387,7 @@
            <dependency groupId="org.apache.rat" artifactId="apache-rat" version="0.10">
               <exclusion groupId="commons-lang" artifactId="commons-lang"/>
            </dependency>
@@ -68,16 +75,16 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
            	<exclusion groupId="org.mortbay.jetty" artifactId="servlet-api"/>
            	<exclusion groupId="commons-logging" artifactId="commons-logging"/>
            	<exclusion groupId="org.eclipse.jdt" artifactId="core"/>
-@@ -430,7 +430,7 @@
+@@ -417,7 +418,7 @@
            <dependency groupId="io.netty" artifactId="netty-all" version="4.0.39.Final" />
            <dependency groupId="com.google.code.findbugs" artifactId="jsr305" version="2.0.2" />
            <dependency groupId="com.clearspring.analytics" artifactId="stream" version="2.5.2" />
 -          <dependency groupId="com.datastax.cassandra" artifactId="cassandra-driver-core" version="3.0.1" classifier="shaded">
-+          <dependency groupId="com.datastax.cassandra" artifactId="cassandra-driver-core" version="3.0.1" >
++          <dependency groupId="com.datastax.cassandra" artifactId="cassandra-driver-core" version="3.0.1">
              <exclusion groupId="io.netty" artifactId="netty-buffer"/>
              <exclusion groupId="io.netty" artifactId="netty-codec"/>
              <exclusion groupId="io.netty" artifactId="netty-handler"/>
-@@ -446,8 +446,7 @@
+@@ -433,8 +434,7 @@
            <dependency groupId="joda-time" artifactId="joda-time" version="2.4" />
            <dependency groupId="com.carrotsearch" artifactId="hppc" version="0.5.4" />
            <dependency groupId="de.jflex" artifactId="jflex" version="1.6.0" />
@@ -87,7 +94,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
            <dependency groupId="com.googlecode.concurrent-trees" artifactId="concurrent-trees" version="2.4.0" />
  	  <dependency groupId="com.github.ben-manes.caffeine" artifactId="caffeine" version="2.2.6" />
          </dependencyManagement>
-@@ -489,11 +488,11 @@
+@@ -476,11 +476,11 @@
                  version="${version}"/>
          <dependency groupId="junit" artifactId="junit"/>
          <dependency groupId="org.apache.rat" artifactId="apache-rat"/>
@@ -101,7 +108,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
            <exclusion groupId="io.netty" artifactId="netty-buffer"/>
            <exclusion groupId="io.netty" artifactId="netty-codec"/>
            <exclusion groupId="io.netty" artifactId="netty-handler"/>
-@@ -515,7 +514,7 @@
+@@ -502,7 +502,7 @@
                  artifactId="cassandra-parent"
                  version="${version}"/>
          <dependency groupId="junit" artifactId="junit"/>
@@ -110,17 +117,17 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
            <exclusion groupId="io.netty" artifactId="netty-buffer"/>
            <exclusion groupId="io.netty" artifactId="netty-codec"/>
            <exclusion groupId="io.netty" artifactId="netty-handler"/>
-@@ -577,7 +576,7 @@
+@@ -564,7 +564,7 @@
          <dependency groupId="org.codehaus.jackson" artifactId="jackson-core-asl"/>
          <dependency groupId="org.codehaus.jackson" artifactId="jackson-mapper-asl"/>
          <dependency groupId="com.googlecode.json-simple" artifactId="json-simple"/>
 -        <dependency groupId="com.boundary" artifactId="high-scale-lib"/>
-+        <dependency groupId="com.github.stephenc.high-scale-lib" artifactId="high-scale-lib"/>
++        <dependency groupId="com.github.stephenc.hihg-scale-lib" artifactId="high-scale-lib"/>
          <dependency groupId="org.yaml" artifactId="snakeyaml"/>
          <dependency groupId="org.mindrot" artifactId="jbcrypt"/>
          <dependency groupId="io.dropwizard.metrics" artifactId="metrics-core"/>
-@@ -593,11 +592,11 @@
-         <dependency groupId="org.apache.cassandra" artifactId="cassandra-thrift"/>
+@@ -576,11 +576,11 @@
+         <dependency groupId="ch.qos.logback" artifactId="logback-classic"/>
  
          <!-- don't need hadoop classes to run, but if you use the hadoop stuff -->
 -        <dependency groupId="org.apache.hadoop" artifactId="hadoop-core" optional="true"/>
@@ -133,17 +140,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
            <exclusion groupId="io.netty" artifactId="netty-buffer"/>
            <exclusion groupId="io.netty" artifactId="netty-codec"/>
            <exclusion groupId="io.netty" artifactId="netty-handler"/>
-@@ -632,8 +631,7 @@
-         <dependency groupId="org.apache.thrift" artifactId="libthrift"/>
-         <dependency groupId="com.carrotsearch" artifactId="hppc" version="0.5.4" />
-         <dependency groupId="de.jflex" artifactId="jflex" version="1.6.0" />
--        <dependency groupId="net.mintern" artifactId="primitive" version="1.0" />
--        <dependency groupId="com.github.rholder" artifactId="snowball-stemmer" version="1.3.0.581.1" />
-+        <dependency groupId="org.tartarus" artifactId="snowball" version="0" />
-         <dependency groupId="com.googlecode.concurrent-trees" artifactId="concurrent-trees" version="2.4.0" />
- 
-       </artifact:pom>
-@@ -799,10 +797,10 @@
+@@ -714,10 +714,10 @@
          The build target builds all the .class files
      -->
      <target name="build"
@@ -156,7 +153,7 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
              name="build-project">
          <echo message="${ant.project.name}: ${ant.file}"/>
          <!-- Order matters! -->
-@@ -873,7 +871,7 @@
+@@ -778,7 +778,7 @@
          The jar target makes cassandra.jar output.
      -->
      <target name="jar"
@@ -164,17 +161,17 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
 +            depends="build, build-test, stress-build"
              description="Assemble Cassandra JAR files">
        <mkdir dir="${build.classes.main}/META-INF" />
-       <mkdir dir="${build.classes.thrift}/META-INF" />
-@@ -913,8 +911,6 @@
+       <copy file="LICENSE.txt"
+@@ -797,8 +797,6 @@
            <attribute name="Implementation-Vendor" value="Apache"/>
            <attribute name="Premain-Class"
                       value="org.apache.cassandra.infrastructure.continuations.CAgent"/>
 -          <attribute name="Class-Path"
--                     value="${ant.project.name}-clientutil-${version}.jar ${ant.project.name}-thrift-${version}.jar" />
+-                     value="${ant.project.name}-clientutil-${version}.jar" />
          <!-- </section> -->
          </manifest>
        </jar>
-@@ -947,7 +943,7 @@
+@@ -831,7 +829,7 @@
        </manifest>
        <mkdir dir="${stress.build.classes}/META-INF" />
        <mkdir dir="${build.dir}/tools/lib/" />
@@ -183,3 +180,6 @@ diff -urN cassandra-cassandra-3.9/build.xml cassandra-cassandra-3.9new/build.xml
          <fileset dir="${stress.build.classes}"/>
        </jar>
      </target>
+-- 
+2.9.3
+

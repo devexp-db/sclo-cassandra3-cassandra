@@ -1,6 +1,118 @@
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java	2016-10-17 13:11:26.286759742 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java	2016-10-17 10:58:46.171126948 +0200
+From e24c2aa406fdd2407ce804709ef93933e5f1a888 Mon Sep 17 00:00:00 2001
+From: Tomas Repik <trepik@redhat.com>
+Date: Mon, 27 Mar 2017 08:31:14 +0200
+Subject: [PATCH] remove thrift files from airline patch
+
+---
+ src/java/org/apache/cassandra/tools/NodeTool.java                 | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Assassinate.java     | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/CfStats.java         | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Cleanup.java         | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java   | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/Compact.java         | 6 +++---
+ .../org/apache/cassandra/tools/nodetool/CompactionHistory.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/Decommission.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java    | 4 ++--
+ .../apache/cassandra/tools/nodetool/DisableAutoCompaction.java    | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java  | 2 +-
+ .../org/apache/cassandra/tools/nodetool/DisableHintsForDC.java    | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/Drain.java           | 2 +-
+ .../org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java   | 2 +-
+ .../org/apache/cassandra/tools/nodetool/EnableHintsForDC.java     | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java  | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Flush.java           | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/GcStats.java         | 2 +-
+ .../apache/cassandra/tools/nodetool/GetCompactionThreshold.java   | 4 ++--
+ .../apache/cassandra/tools/nodetool/GetCompactionThroughput.java  | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java    | 4 ++--
+ .../cassandra/tools/nodetool/GetInterDCStreamThroughput.java      | 2 +-
+ .../org/apache/cassandra/tools/nodetool/GetLoggingLevels.java     | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java     | 8 ++++----
+ .../org/apache/cassandra/tools/nodetool/GetStreamThroughput.java  | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java      | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/GetTraceProbability.java  | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java      | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Info.java            | 4 ++--
+ .../apache/cassandra/tools/nodetool/InvalidateCounterCache.java   | 2 +-
+ .../org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java   | 2 +-
+ .../org/apache/cassandra/tools/nodetool/InvalidateRowCache.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Join.java            | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Move.java            | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/NetStats.java        | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java  | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Rebuild.java         | 8 ++++----
+ src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java    | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/Refresh.java         | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java  | 2 +-
+ .../org/apache/cassandra/tools/nodetool/RelocateSSTables.java     | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java      | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/Repair.java          | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java  | 2 +-
+ .../org/apache/cassandra/tools/nodetool/ResetLocalSchema.java     | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Ring.java            | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/Scrub.java           | 6 +++---
+ .../org/apache/cassandra/tools/nodetool/SetCacheCapacity.java     | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java   | 4 ++--
+ .../apache/cassandra/tools/nodetool/SetCompactionThreshold.java   | 4 ++--
+ .../apache/cassandra/tools/nodetool/SetCompactionThroughput.java  | 4 ++--
+ .../cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java    | 4 ++--
+ .../cassandra/tools/nodetool/SetInterDCStreamThroughput.java      | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/SetStreamThroughput.java  | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java      | 4 ++--
+ .../org/apache/cassandra/tools/nodetool/SetTraceProbability.java  | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/Snapshot.java        | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/Status.java          | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java    | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java   | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/Stop.java            | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java      | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/TableStats.java      | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java   | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/TpStats.java         | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java   | 4 ++--
+ src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java  | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/Verify.java          | 6 +++---
+ src/java/org/apache/cassandra/tools/nodetool/Version.java         | 2 +-
+ src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java | 4 ++--
+ 90 files changed, 154 insertions(+), 154 deletions(-)
+
+diff --git a/src/java/org/apache/cassandra/tools/NodeTool.java b/src/java/org/apache/cassandra/tools/NodeTool.java
+index c264c31..e83828a 100644
+--- a/src/java/org/apache/cassandra/tools/NodeTool.java
++++ b/src/java/org/apache/cassandra/tools/NodeTool.java
+@@ -28,7 +28,7 @@ import com.google.common.base.Joiner;
+ import com.google.common.base.Throwables;
+ import com.google.common.collect.*;
+ 
+-import io.airlift.command.*;
++import io.airlift.airline.*;
+ 
+ import org.apache.cassandra.locator.EndpointSnitchInfoMBean;
+ import org.apache.cassandra.tools.nodetool.*;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java b/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java
+index 56fec44..a075ded 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Assassinate.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -12,9 +124,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/As
  
  import java.net.UnknownHostException;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java	2016-10-17 13:11:26.289759772 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java	2016-10-17 10:58:46.171126948 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java b/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java
+index bb47e10..7be9173 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/BootstrapResume.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -24,9 +137,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Bo
  
  import java.io.IOError;
  import java.io.IOException;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java	2016-10-17 13:11:26.289759772 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java	2016-10-17 10:58:46.171126948 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java b/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java
+index 69d3b4a..8fdf803 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/CfHistograms.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -36,9 +150,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cf
  
  /**
   * @deprecated use TableHistograms
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CfStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CfStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CfStats.java	2016-10-17 13:11:26.289759772 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CfStats.java	2016-10-17 10:58:46.171126948 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/CfStats.java b/src/java/org/apache/cassandra/tools/nodetool/CfStats.java
+index 15c72ba..2d27ea0 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/CfStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/CfStats.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -48,9 +163,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cf
  
  /**
   * @deprecated use TableStats
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java	2016-10-17 13:11:26.289759772 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java	2016-10-17 10:58:46.171126948 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java b/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java
+index 41e9b01..3e97f03 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Cleanup.java
 @@ -17,14 +17,14 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -69,10 +185,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cl
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java	2016-10-17 13:11:26.289759772 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java	2016-10-17 10:58:46.171126948 +0200
-@@ -20,9 +20,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java b/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java
+index 7167bd9..10a8117 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ClearSnapshot.java
+@@ -20,9 +20,9 @@ package org.apache.cassandra.tools.nodetool;
  import static com.google.common.collect.Iterables.toArray;
  import static org.apache.commons.lang3.StringUtils.EMPTY;
  import static org.apache.commons.lang3.StringUtils.join;
@@ -85,35 +202,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Cl
  
  import java.io.IOException;
  import java.util.ArrayList;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java	2016-10-17 13:11:26.290759781 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java	2016-10-17 10:58:46.172126957 +0200
-@@ -26,7 +26,7 @@
- import java.util.Set;
- import javax.management.openmbean.TabularData;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java	2016-10-17 13:11:26.290759781 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java	2016-10-17 10:58:46.172126957 +0200
-@@ -22,8 +22,8 @@
- import java.util.Map;
- import java.util.Map.Entry;
- 
--import io.airlift.command.Command;
--import io.airlift.command.Option;
-+import io.airlift.airline.Command;
-+import io.airlift.airline.Option;
- 
- import org.apache.cassandra.db.compaction.CompactionManagerMBean;
- import org.apache.cassandra.db.compaction.OperationType;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Compact.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Compact.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Compact.java	2016-10-17 13:11:26.290759781 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Compact.java	2016-10-17 10:58:46.172126957 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Compact.java b/src/java/org/apache/cassandra/tools/nodetool/Compact.java
+index f268f0a..0bb89e2 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Compact.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Compact.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -127,9 +219,38 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Co
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Decommission.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Decommission.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Decommission.java	2016-10-17 13:11:26.290759781 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Decommission.java	2016-10-17 10:58:46.172126957 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java b/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java
+index 40c6887..55032c4 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/CompactionHistory.java
+@@ -26,7 +26,7 @@ import java.util.List;
+ import java.util.Set;
+ import javax.management.openmbean.TabularData;
+ 
+-import io.airlift.command.Command;
++import io.airlift.airline.Command;
+ 
+ import org.apache.cassandra.tools.NodeProbe;
+ import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java b/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java
+index 69fcbab..908c255 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/CompactionStats.java
+@@ -22,8 +22,8 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
+ 
+-import io.airlift.command.Command;
+-import io.airlift.command.Option;
++import io.airlift.airline.Command;
++import io.airlift.airline.Option;
+ 
+ import org.apache.cassandra.db.compaction.CompactionManagerMBean;
+ import org.apache.cassandra.db.compaction.OperationType;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Decommission.java b/src/java/org/apache/cassandra/tools/nodetool/Decommission.java
+index 34890e0..f18a246 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Decommission.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Decommission.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -139,9 +260,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/De
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java	2016-10-17 13:11:26.290759781 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java	2016-10-17 10:58:46.172126957 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java b/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java
+index 81dee20..9bf3990 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DescribeCluster.java
 @@ -18,7 +18,7 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -151,9 +273,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/De
  
  import java.util.List;
  import java.util.Map;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java	2016-10-17 10:58:46.172126957 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java b/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java
+index a120ffe..2a73c2a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DescribeRing.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -165,9 +288,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/De
  
  import java.io.IOException;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java	2016-10-17 10:58:46.172126957 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java b/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java
+index 4d35ded..b9fc7d6 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableAutoCompaction.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -179,9 +303,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  
  import java.io.IOException;
  import java.util.ArrayList;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java b/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java
+index 74e7f50..4b0bfbe 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableBackup.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -191,9 +316,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java b/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java
+index dee319b..463f2b0 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableBinary.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -203,9 +329,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java b/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java
+index 32448c9..6f950bb 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableGossip.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -215,9 +342,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java b/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java
+index 11cd754..d7ec35f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableHandoff.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -227,10 +355,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java	2016-10-17 13:11:26.291759791 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java	2016-10-17 10:58:46.173126965 +0200
-@@ -20,8 +20,8 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java b/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java
+index 7072318..d65c70b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/DisableHintsForDC.java
+@@ -20,8 +20,8 @@ package org.apache.cassandra.tools.nodetool;
  import java.util.ArrayList;
  import java.util.List;
  
@@ -241,21 +370,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Di
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableThrift.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableThrift.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/DisableThrift.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/DisableThrift.java	2016-10-17 10:58:46.173126965 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Drain.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Drain.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Drain.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Drain.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Drain.java b/src/java/org/apache/cassandra/tools/nodetool/Drain.java
+index 5562e6d..eaa537a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Drain.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Drain.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -265,9 +383,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Dr
  
  import java.io.IOException;
  import java.util.concurrent.ExecutionException;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java	2016-10-17 10:58:46.173126965 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java b/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java
+index c758df8..795ab13 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableAutoCompaction.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -279,9 +398,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  
  import java.io.IOException;
  import java.util.ArrayList;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java	2016-10-17 10:58:46.174126974 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java b/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java
+index 4847fa5..d1773d9 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableBackup.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -291,9 +411,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java	2016-10-17 10:58:46.174126974 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java b/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java
+index f1d5d9c..506945f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableBinary.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -303,9 +424,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java	2016-10-17 13:11:26.292759801 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java	2016-10-17 10:58:46.174126974 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java b/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java
+index 16a9f4b..900c427 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableGossip.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -315,9 +437,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java	2016-10-17 10:58:46.174126974 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java b/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java
+index 149c0fc..bccf7e7 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableHandoff.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -327,10 +450,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java	2016-10-17 10:58:46.174126974 +0200
-@@ -20,8 +20,8 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java b/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java
+index 1979ebd..97e40e0 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/EnableHintsForDC.java
+@@ -20,8 +20,8 @@ package org.apache.cassandra.tools.nodetool;
  import java.util.ArrayList;
  import java.util.List;
  
@@ -341,21 +465,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/En
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableThrift.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableThrift.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/EnableThrift.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/EnableThrift.java	2016-10-17 10:58:46.174126974 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java	2016-10-17 10:58:46.174126974 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java b/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java
+index 3c0303d..b3ffb6d 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/FailureDetectorInfo.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -365,9 +478,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Fa
  
  import java.util.List;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Flush.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Flush.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Flush.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Flush.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Flush.java b/src/java/org/apache/cassandra/tools/nodetool/Flush.java
+index f768615..c83e420 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Flush.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Flush.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -379,10 +493,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Fl
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GcStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GcStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GcStats.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GcStats.java	2016-10-17 10:58:46.175126982 +0200
-@@ -20,7 +20,7 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GcStats.java b/src/java/org/apache/cassandra/tools/nodetool/GcStats.java
+index dd38fe7..07ae6d9 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GcStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GcStats.java
+@@ -20,7 +20,7 @@ package org.apache.cassandra.tools.nodetool;
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
  
@@ -391,9 +506,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Gc
  
  @Command(name = "gcstats", description = "Print GC Statistics")
  public class GcStats extends NodeToolCmd
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java	2016-10-17 13:11:26.293759811 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java b/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java
+index 6c629de..589b1b3 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThreshold.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -405,9 +521,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java
+index c3af184..a7df4d1 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetCompactionThroughput.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -417,9 +534,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java b/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java
+index 49d2148..922ae26 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetEndpoints.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -431,9 +549,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import java.net.InetAddress;
  import java.util.ArrayList;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java
+index 4c354c0..039814e 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetInterDCStreamThroughput.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -443,9 +562,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java	2016-10-17 10:58:46.175126982 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java b/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java
+index 7ce0017..90d6817 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetLoggingLevels.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -455,9 +575,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import java.util.Map;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java	2016-10-17 13:13:11.617792304 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java b/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java
+index 849ad94..48a5723 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetSSTables.java
 @@ -18,13 +18,13 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -475,16 +596,17 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
  
-@@ -53,4 +53,4 @@
+@@ -53,4 +53,4 @@ public class GetSSTables extends NodeToolCmd
              System.out.println(sstable);
          }
      }
 -}
 \ No newline at end of file
 +}
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java
+index 437eb54..b76d14b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetStreamThroughput.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -494,9 +616,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java	2016-10-17 13:11:26.294759821 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java b/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java
+index b12c9a7..6c9b541 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetTimeout.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -508,9 +631,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java b/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java
+index 3940790..374ab2c 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GetTraceProbability.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -520,9 +644,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ge
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java b/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java
+index 2acfcf1..1b4b979 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/GossipInfo.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -532,9 +657,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Go
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Info.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Info.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Info.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Info.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Info.java b/src/java/org/apache/cassandra/tools/nodetool/Info.java
+index bddd124..d95b58a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Info.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Info.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -546,9 +672,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/In
  
  import java.lang.management.MemoryUsage;
  import java.util.Iterator;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java	2016-10-17 10:58:46.176126991 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java b/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java
+index a5f0ebc..aef77bd 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/InvalidateCounterCache.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -558,9 +685,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/In
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java b/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java
+index 70abd53..cfe7d2f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/InvalidateKeyCache.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -570,9 +698,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/In
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java b/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java
+index 149f80b..7357e27 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/InvalidateRowCache.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -582,9 +711,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/In
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Join.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Join.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Join.java	2016-10-17 13:11:26.295759830 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Join.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Join.java b/src/java/org/apache/cassandra/tools/nodetool/Join.java
+index 5815591..5a11ab8 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Join.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Join.java
 @@ -18,7 +18,7 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -594,10 +724,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Jo
  
  import java.io.IOException;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java	2016-10-17 13:11:26.296759840 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java	2016-10-17 10:58:46.177126999 +0200
-@@ -22,7 +22,7 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java b/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java
+index 1b3065b..e73fcdc 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ListSnapshots.java
+@@ -22,7 +22,7 @@ import java.util.Map;
  import java.util.Set;
  import javax.management.openmbean.TabularData;
  
@@ -606,9 +737,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Li
  
  import org.apache.cassandra.io.util.FileUtils;
  import org.apache.cassandra.tools.NodeProbe;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Move.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Move.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Move.java	2016-10-17 13:11:26.296759840 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Move.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Move.java b/src/java/org/apache/cassandra/tools/nodetool/Move.java
+index fc6b1bf..8654d25 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Move.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Move.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -620,9 +752,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Mo
  
  import java.io.IOException;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/NetStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/NetStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/NetStats.java	2016-10-17 13:11:26.296759840 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/NetStats.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/NetStats.java b/src/java/org/apache/cassandra/tools/nodetool/NetStats.java
+index c171a3e..306e27b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/NetStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/NetStats.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -634,9 +767,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ne
  
  import java.util.Set;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java	2016-10-17 13:11:26.296759840 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java b/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java
+index ed1f655..4ec70d8 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/PauseHandoff.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -646,9 +780,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Pa
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java	2016-10-17 13:11:26.297759850 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java	2016-10-17 10:58:46.177126999 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java b/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java
+index 656e7ed..620d75a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ProxyHistograms.java
 @@ -18,7 +18,7 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -658,9 +793,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Pr
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java	2016-10-17 13:11:26.297759850 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java	2016-10-17 10:58:46.178127007 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java b/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java
+index e079a4b..1ca2aa9 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/RangeKeySample.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -670,23 +806,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ra
  
  import java.util.List;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java	2016-10-17 13:11:26.298759860 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java	2016-10-17 10:58:46.178127007 +0200
-@@ -19,8 +19,8 @@
- 
- import static com.google.common.base.Preconditions.checkArgument;
- import static com.google.common.collect.Iterables.toArray;
--import io.airlift.command.Arguments;
--import io.airlift.command.Command;
-+import io.airlift.airline.Arguments;
-+import io.airlift.airline.Command;
- 
- import java.util.ArrayList;
- import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java	2016-10-17 13:11:26.298759860 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java	2016-10-17 10:52:30.337742600 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java b/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java
+index 865f9fe..1d4e3f7 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Rebuild.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -700,16 +823,32 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-@@ -52,4 +52,4 @@
+@@ -52,4 +52,4 @@ public class Rebuild extends NodeToolCmd
  
          probe.rebuild(sourceDataCenterName, keyspace, tokens);
      }
 -}
 \ No newline at end of file
 +}
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Refresh.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Refresh.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Refresh.java	2016-10-17 13:11:26.298759860 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Refresh.java	2016-10-17 10:58:46.178127007 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java b/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java
+index 5fd7327..4a6b071 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/RebuildIndex.java
+@@ -19,8 +19,8 @@ package org.apache.cassandra.tools.nodetool;
+ 
+ import static com.google.common.base.Preconditions.checkArgument;
+ import static com.google.common.collect.Iterables.toArray;
+-import io.airlift.command.Arguments;
+-import io.airlift.command.Command;
++import io.airlift.airline.Arguments;
++import io.airlift.airline.Command;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Refresh.java b/src/java/org/apache/cassandra/tools/nodetool/Refresh.java
+index 153255c..726f12a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Refresh.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Refresh.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -721,9 +860,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java	2016-10-17 13:11:26.299759870 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java	2016-10-17 10:58:46.178127007 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java b/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java
+index 870c7b4..586b451 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/RefreshSizeEstimates.java
 @@ -18,7 +18,7 @@
  
  package org.apache.cassandra.tools.nodetool;
@@ -733,9 +873,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java	2016-10-17 13:11:26.299759870 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java	2016-10-17 10:58:46.178127007 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java b/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java
+index 416aff0..6ca90fb 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ReloadTriggers.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -745,10 +886,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java	2016-10-17 13:11:26.299759870 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java	2016-10-17 10:58:46.178127007 +0200
-@@ -20,9 +20,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java b/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java
+index 7c3066c..853b1d3 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/RelocateSSTables.java
+@@ -20,9 +20,9 @@ package org.apache.cassandra.tools.nodetool;
  import java.util.ArrayList;
  import java.util.List;
  
@@ -761,9 +903,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java	2016-10-17 13:11:26.300759879 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java	2016-10-17 10:58:46.179127016 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java b/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java
+index 848049e..7312597 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/RemoveNode.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -775,10 +918,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Repair.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Repair.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Repair.java	2016-10-17 13:11:26.300759879 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Repair.java	2016-10-17 10:58:46.179127016 +0200
-@@ -19,9 +19,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Repair.java b/src/java/org/apache/cassandra/tools/nodetool/Repair.java
+index 02bfc5b..085574a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Repair.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Repair.java
+@@ -19,9 +19,9 @@ package org.apache.cassandra.tools.nodetool;
  
  import static com.google.common.collect.Lists.newArrayList;
  import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -791,10 +935,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import java.util.ArrayList;
  import java.util.HashMap;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java	2016-10-17 13:11:26.300759879 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java	2016-10-17 10:58:46.179127016 +0200
-@@ -21,7 +21,7 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java b/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java
+index e3dcbd4..23c31f7 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ReplayBatchlog.java
+@@ -21,7 +21,7 @@ package org.apache.cassandra.tools.nodetool;
  import java.io.IOError;
  import java.io.IOException;
  
@@ -803,9 +948,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java	2016-10-17 13:11:26.300759879 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java	2016-10-17 10:58:46.179127016 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java b/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java
+index 43280ab..708636f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ResetLocalSchema.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -815,9 +961,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import java.io.IOException;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java	2016-10-17 13:11:26.300759879 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java	2016-10-17 10:58:46.179127016 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java b/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java
+index 584ab64..a3984f8 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ResumeHandoff.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -827,9 +974,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Re
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ring.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Ring.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ring.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Ring.java	2016-10-17 10:58:46.179127016 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Ring.java b/src/java/org/apache/cassandra/tools/nodetool/Ring.java
+index 55220a1..e6f8582 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Ring.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Ring.java
 @@ -18,9 +18,9 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -843,9 +991,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ri
  
  import java.net.InetAddress;
  import java.net.UnknownHostException;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Scrub.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Scrub.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Scrub.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Scrub.java	2016-10-17 10:58:46.179127016 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Scrub.java b/src/java/org/apache/cassandra/tools/nodetool/Scrub.java
+index 2345a85..9cc9fe6 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Scrub.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Scrub.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -859,9 +1008,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Sc
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java b/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java
+index 6c280d8..461f6ae 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetCacheCapacity.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -873,9 +1023,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java b/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java
+index 12a4570..18197e6 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetCacheKeysToSave.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -887,10 +1038,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java	2016-10-17 10:58:46.180127024 +0200
-@@ -19,8 +19,8 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java b/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java
+index 304f2b7..56e558f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThreshold.java
+@@ -19,8 +19,8 @@ package org.apache.cassandra.tools.nodetool;
  
  import static com.google.common.base.Preconditions.checkArgument;
  import static java.lang.Integer.parseInt;
@@ -901,9 +1053,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java
+index 0111a20..80e7222 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetCompactionThroughput.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -915,9 +1068,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java	2016-10-17 13:11:26.301759889 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java b/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java
+index d20ff3f..feb945b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetHintedHandoffThrottleInKB.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -929,9 +1083,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java
+index 41ce43a..e2e606c 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetInterDCStreamThroughput.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -943,9 +1098,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java	2016-10-17 10:58:46.180127024 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java b/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java
+index d11d48f..94e4e3b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetLoggingLevel.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -957,9 +1113,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java	2016-10-17 10:58:46.181127033 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java b/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java
+index 8055872..069a6e9 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetStreamThroughput.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -971,9 +1128,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java	2016-10-17 10:58:46.181127033 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java b/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java
+index 0b99efd..06b859b 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetTimeout.java
 @@ -17,8 +17,8 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -985,9 +1143,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java	2016-10-17 10:58:46.181127033 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java b/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java
+index ebef1a4..e081980 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/SetTraceProbability.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -999,10 +1158,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Se
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java	2016-10-17 10:58:46.181127033 +0200
-@@ -19,9 +19,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java b/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java
+index 8941ec1..8d01d3a 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Snapshot.java
+@@ -19,9 +19,9 @@ package org.apache.cassandra.tools.nodetool;
  
  import static com.google.common.collect.Iterables.toArray;
  import static org.apache.commons.lang3.StringUtils.join;
@@ -1015,57 +1175,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Sn
  
  import java.io.IOException;
  import java.util.ArrayList;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java	2016-10-17 13:11:26.302759899 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java	2016-10-17 10:58:46.181127033 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java	2016-10-17 10:58:46.181127033 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java	2016-10-17 10:58:46.182127041 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java	2016-10-17 10:58:46.182127041 +0200
-@@ -17,7 +17,7 @@
-  */
- package org.apache.cassandra.tools.nodetool;
- 
--import io.airlift.command.Command;
-+import io.airlift.airline.Command;
- 
- import org.apache.cassandra.tools.NodeProbe;
- import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Status.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Status.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Status.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Status.java	2016-10-17 10:58:46.183127050 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Status.java b/src/java/org/apache/cassandra/tools/nodetool/Status.java
+index a43b703..028c1aa 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Status.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Status.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1079,9 +1192,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/St
  
  import java.net.InetAddress;
  import java.net.UnknownHostException;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusThrift.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusThrift.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StatusThrift.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StatusThrift.java	2016-10-17 10:58:46.183127050 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java b/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java
+index 49a6750..84fa8a5 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/StatusBackup.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1091,9 +1205,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/St
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java	2016-10-17 10:58:46.183127050 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java b/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java
+index d4fae14..45fe6c3 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/StatusBinary.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1103,9 +1218,36 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/St
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Stop.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Stop.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Stop.java	2016-10-17 13:11:26.303759909 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Stop.java	2016-10-17 10:58:46.184127058 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java b/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java
+index e40df8d..b6a1164 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/StatusGossip.java
+@@ -17,7 +17,7 @@
+  */
+ package org.apache.cassandra.tools.nodetool;
+ 
+-import io.airlift.command.Command;
++import io.airlift.airline.Command;
+ 
+ import org.apache.cassandra.tools.NodeProbe;
+ import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java b/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java
+index 65f6729..bee161d 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/StatusHandoff.java
+@@ -17,7 +17,7 @@
+  */
+ package org.apache.cassandra.tools.nodetool;
+ 
+-import io.airlift.command.Command;
++import io.airlift.airline.Command;
+ 
+ import org.apache.cassandra.tools.NodeProbe;
+ import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Stop.java b/src/java/org/apache/cassandra/tools/nodetool/Stop.java
+index 6229e65..d529319 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Stop.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Stop.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1119,10 +1261,24 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/St
  
  import org.apache.cassandra.db.compaction.OperationType;
  import org.apache.cassandra.tools.NodeProbe;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java	2016-10-17 10:58:46.184127058 +0200
-@@ -19,8 +19,8 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java b/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java
+index a0af89f..fde0245 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/StopDaemon.java
+@@ -17,7 +17,7 @@
+  */
+ package org.apache.cassandra.tools.nodetool;
+ 
+-import io.airlift.command.Command;
++import io.airlift.airline.Command;
+ 
+ import org.apache.cassandra.tools.NodeProbe;
+ import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java b/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java
+index 8f4ffa6..5286e18 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/TableHistograms.java
+@@ -19,8 +19,8 @@ package org.apache.cassandra.tools.nodetool;
  
  import static com.google.common.base.Preconditions.checkArgument;
  import static java.lang.String.format;
@@ -1133,10 +1289,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ta
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TableStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TableStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TableStats.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TableStats.java	2016-10-17 10:55:04.295160059 +0200
-@@ -21,9 +21,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/TableStats.java b/src/java/org/apache/cassandra/tools/nodetool/TableStats.java
+index ec729a5..6b23fdf 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/TableStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/TableStats.java
+@@ -21,9 +21,9 @@ import java.util.*;
  import javax.management.InstanceNotFoundException;
  
  import com.google.common.collect.ArrayListMultimap;
@@ -1149,10 +1306,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ta
  
  import org.apache.cassandra.db.ColumnFamilyStoreMBean;
  import org.apache.cassandra.io.util.FileUtils;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java	2016-10-17 10:58:46.185127067 +0200
-@@ -19,9 +19,9 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java b/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java
+index b473a8d..27a178f 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/TopPartitions.java
+@@ -19,9 +19,9 @@ package org.apache.cassandra.tools.nodetool;
  
  import static com.google.common.base.Preconditions.checkArgument;
  import static org.apache.commons.lang3.StringUtils.join;
@@ -1165,9 +1323,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/To
  
  import java.util.ArrayList;
  import java.util.Collections;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TpStats.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TpStats.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TpStats.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TpStats.java	2016-10-17 10:58:46.185127067 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/TpStats.java b/src/java/org/apache/cassandra/tools/nodetool/TpStats.java
+index 5d3eab7..11f3470 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/TpStats.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/TpStats.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1177,9 +1336,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Tp
  
  import java.util.Map;
  
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java	2016-10-17 10:58:46.186127075 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java b/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java
+index bcd554f..a3a0049 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/TruncateHints.java
 @@ -18,8 +18,8 @@
  package org.apache.cassandra.tools.nodetool;
  
@@ -1191,9 +1351,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Tr
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java	2016-10-17 10:58:46.186127075 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java b/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java
+index 82866e0..c957c8c 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/UpgradeSSTable.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1207,9 +1368,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Up
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Verify.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Verify.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Verify.java	2016-10-17 13:11:26.304759919 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Verify.java	2016-10-17 10:58:46.186127075 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Verify.java b/src/java/org/apache/cassandra/tools/nodetool/Verify.java
+index c449366..75cb109 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Verify.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Verify.java
 @@ -17,9 +17,9 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1223,9 +1385,10 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ve
  
  import java.util.ArrayList;
  import java.util.List;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Version.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Version.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Version.java	2016-10-17 13:11:26.305759928 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/Version.java	2016-10-17 10:58:46.186127075 +0200
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/Version.java b/src/java/org/apache/cassandra/tools/nodetool/Version.java
+index 2495508..395a247 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/Version.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/Version.java
 @@ -17,7 +17,7 @@
   */
  package org.apache.cassandra.tools.nodetool;
@@ -1235,10 +1398,11 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Ve
  
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool.NodeToolCmd;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java	2016-09-26 16:02:27.000000000 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java	2016-10-17 13:13:41.405084309 +0200
-@@ -22,8 +22,8 @@
+diff --git a/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java b/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java
+index 0696396..b432b68 100644
+--- a/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java
++++ b/src/java/org/apache/cassandra/tools/nodetool/ViewBuildStatus.java
+@@ -22,8 +22,8 @@ import java.util.ArrayList;
  import java.util.List;
  import java.util.Map;
  
@@ -1249,15 +1413,6 @@ diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/nodetool/Vi
  import org.apache.cassandra.tools.NodeProbe;
  import org.apache.cassandra.tools.NodeTool;
  import org.apache.cassandra.tools.nodetool.formatter.TableBuilder;
-diff -ur cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/NodeTool.java cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/NodeTool.java
---- cassandra-cassandra-3.9/src/java/org/apache/cassandra/tools/NodeTool.java	2016-10-17 13:11:26.305759928 +0200
-+++ cassandra-cassandra-3.9new/src/java/org/apache/cassandra/tools/NodeTool.java	2016-10-17 10:58:46.186127075 +0200
-@@ -28,7 +28,7 @@
- import com.google.common.base.Throwables;
- import com.google.common.collect.*;
- 
--import io.airlift.command.*;
-+import io.airlift.airline.*;
- 
- import org.apache.cassandra.locator.EndpointSnitchInfoMBean;
- import org.apache.cassandra.tools.nodetool.*;
+-- 
+2.9.3
+
