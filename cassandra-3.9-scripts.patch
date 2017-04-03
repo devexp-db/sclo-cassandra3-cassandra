@@ -34,7 +34,7 @@ diff -urN cassandra-3.9/bin/cassandra cassandra-3.9new/bin/cassandra
  
 +wait_for_service_available()
 +{
-+  host=$(cat $CASSANDRA_CONF/cassandra.yaml | grep listen_address: | head -1 | cut -d' ' -f2)
++  host=$(head -1 /etc/hosts | cut -f1)
 +  port=$(cat $CASSANDRA_CONF/cassandra.yaml | grep native_transport_port | head -1 | cut -d' ' -f2)
 +  if ! nc -z $host $port; then
 +    # echo "Waiting for Cassandra to start..."

@@ -10,7 +10,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -462,6 +462,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Mon Apr 03 2017 Tomas Repik <trepik@redhat.com> - 3.9-8
+- add SchemaConstants.java and fix cassandra startup
+
 * Tue Mar 28 2017 Tomas Repik <trepik@redhat.com> - 3.9-7
 - remove thrift from 3.9 applying mainly upstream patch
 
