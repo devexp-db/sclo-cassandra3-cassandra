@@ -10,7 +10,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -89,6 +89,14 @@ BuildRequires:	%{?scl_prefix}caffeine
 BuildRequires:	%{?scl_prefix}hppc
 BuildRequires:	%{?scl_prefix}lz4-java
 BuildRequires:	%{?scl_prefix}snappy-java
+BuildRequires:	%{?scl_prefix}ohc
+BuildRequires:	%{?scl_prefix}ohc-core-j8
+BuildRequires:	%{?scl_prefix}netty
+BuildRequires:	%{?scl_prefix}cassandra-java-driver
+BuildRequires:	%{?scl_prefix}jflex
+BuildRequires:	%{?scl_prefix}apache-commons-math
+BuildRequires:	%{?scl_prefix_maven}jna
+BuildRequires:	%{?scl_prefix}guava
 # using high-scale-lib from stephenc, no Cassandra original
 #BuildRequires:	 mvn(com.boundary:high-scale-lib)
 BuildRequires:	%{?scl_prefix}high-scale-lib
@@ -97,22 +105,20 @@ BuildRequires:	%{?scl_prefix}high-scale-lib
 BuildRequires:	%{?scl_prefix}snowball-java
 # probably won't need in the future
 BuildRequires:	%{?scl_prefix}concurrentlinkedhashmap-lru
-# in rh-maven33: 1.4.3, needed: 1.6.0
-BuildRequires:	%{?scl_prefix_maven}jflex
 # in rh-java-common: 1.7.4, needed: 1.7.7
 BuildRequires:	%{?scl_prefix_java_common}log4j-over-slf4j
 # in rh-java-common: 1.7.4, needed: 1.7.7
 BuildRequires:	%{?scl_prefix_java_common}jcl-over-slf4j
 # in rh-java-common: 1.9.2, needed: 1.9.4
 BuildRequires:	%{?scl_prefix_java_common}ant-junit
-# in rh-java-common: 4.0.28, needed: 4.0.39.Final
-BuildRequires:	%{?scl_prefix_java_common}netty
-# TODO
-BuildRequires:	%{?scl_prefix}cassandra-java-driver
-BuildRequires:	%{?scl_prefix}ohc
-BuildRequires:	%{?scl_prefix}ohc-core-j8
 # the SCL version of the package depends on rh-maven33 collection
-%{?scl:Requires: %%scl_require rh-maven33}
+# TODO
+#%{?scl:Requires: %%scl_require rh-maven33}
+# transitive dependencies
+BuildRequires:	%{?scl_prefix}stringtemplate4
+BuildRequires:	%{?scl_prefix_java_common}java_cup
+BuildRequires:	%{?scl_prefix_java_common}atinject
+BuildRequires:	%{?scl_prefix}slf4j
 
 # temporarly removed as it is optional
 # using hadoop-common instead of hadoop-core, no Cassandra original
@@ -211,12 +217,14 @@ cp -p %{SOURCE4} build/%{pkg_name}-%{version}.pom
 cp -p %{SOURCE6} build/%{pkg_name}-clientutil-%{version}.pom
 cp -p %{SOURCE7} build/%{pkg_name}-%{version}-parent.pom
 
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
+set -e -x
 # build jar repositories for dependencies
 build-jar-repository lib antlr3
 build-jar-repository lib stringtemplate4
 build-jar-repository lib jsr-305
 build-jar-repository lib commons-lang3
-build-jar-repository lib slf4j/api
+build-jar-repository lib slf4j/slf4j-api
 build-jar-repository lib guava
 build-jar-repository lib jamm
 build-jar-repository lib stream-lib
@@ -229,6 +237,7 @@ build-jar-repository lib compile-command-annotations
 build-jar-repository lib high-scale-lib/high-scale-lib
 build-jar-repository lib cassandra-java-driver/cassandra-driver-core
 build-jar-repository lib netty/netty-all
+build-jar-repository lib netty/netty-transport-native-epoll
 build-jar-repository lib lz4-java
 build-jar-repository lib snappy-java
 build-jar-repository lib jBCrypt
@@ -265,7 +274,7 @@ build-jar-repository lib commons-codec
 build-jar-repository lib caffeine
 # test dependencies
 build-jar-repository lib junit
-build-jar-repository lib ant
+build-jar-repository lib ant/ant
 build-jar-repository lib ant/ant-junit
 build-jar-repository lib hamcrest/core
 build-jar-repository lib apache-commons-io
@@ -274,7 +283,7 @@ build-jar-repository lib commons-collections
 build-jar-repository lib jmh/jmh-core
 build-jar-repository lib HdrHistogram
 # binaries dependencies
-build-jar-repository lib javax.inject
+build-jar-repository lib atinject
 
 # build patch
 %patch0 -p1
@@ -289,7 +298,6 @@ build-jar-repository lib javax.inject
 # remove primitive patch
 %patch6 -p1
 
-%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 # remove hadoop
 rm -r src/java/org/apache/cassandra/hadoop
 # remove hadoop also from pom files
@@ -320,7 +328,7 @@ ant jar javadoc -Drelease=true
 
 # Build the cqlshlib Python module
 pushd pylib
-%py2_build
+%{__python2} setup.py build
 popd
 
 %install
@@ -337,7 +345,7 @@ popd
 
 # Install the cqlshlib Python module
 pushd pylib
-%py2_install
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 popd
 
 # create data and log dirs
@@ -462,6 +470,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Mon Apr 10 2017 Tomas Repik <trepik@redhat.com> - 3.9-9
+- scl conversion
+
 * Mon Apr 03 2017 Tomas Repik <trepik@redhat.com> - 3.9-8
 - add SchemaConstants.java and fix cassandra startup
 
