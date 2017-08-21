@@ -10,7 +10,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	9%{?dist}
+Release:	11%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -51,7 +51,7 @@ Patch7:		%{pkg_name}-%{version}-remove-thrift.patch
 #BuildArchitectures:	noarch
 
 Requires:	%{pkg_name}-python2-cqlshlib = %{version}-%{release}
-Requires:	%{pkg_name}-java-libs = %{version}-%{release}
+Requires:	%{?scl_prefix}%{pkg_name}-java-libs = %{version}-%{release}
 Requires:	%{?scl_prefix}airline
 Provides:	cqlsh = %{cqlsh_version}
 
@@ -136,8 +136,8 @@ Summary:	OpenSource database server for high-scale application
 %{?scl:Requires: %scl_runtime}
 Requires(pre):	shadow-utils
 Requires:	%{?scl_prefix}sigar
-Requires:	%{pkg_name}-java-libs = %{version}-%{release}
-Requires:	jctools
+Requires:	%{?scl_prefix}%{pkg_name}-java-libs = %{version}-%{release}
+Requires:	%{?scl_prefix}jctools
 Requires:	procps-ng
 %{?scl:Requires:	nc}
 %{!?scl:Requires:	nmap-ncat}
@@ -390,7 +390,7 @@ install -p -D -m 644 "%{SOURCE2}"  %{buildroot}%{_unitdir}/%{pkg_name}.service
 %pre server
 getent group %{pkg_name} >/dev/null || groupadd -f -g %{gid_uid} -r %{pkg_name}
 if ! getent passwd %{pkg_name} >/dev/null ; then
-  if ! getrnt passwd %{gid_uid} >/dev/null ; then
+  if ! getent passwd %{gid_uid} >/dev/null ; then
     useradd -r -u %{gid_uid} -g %{pkg_name} -d %{_sharedstatedir}/%{pkg_name}/data \
       -s /sbin/nologin -c "Cassandra Database Server" %{pkg_name}
   else
@@ -470,6 +470,12 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Mon Aug 21 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-11
+- rebuilt
+
+* Mon Aug 21 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-10
+- rebuilt
+
 * Mon Apr 10 2017 Tomas Repik <trepik@redhat.com> - 3.9-9
 - scl conversion
 
