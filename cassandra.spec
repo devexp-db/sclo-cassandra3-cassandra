@@ -50,7 +50,7 @@ Patch7:		%{pkg_name}-%{version}-remove-thrift.patch
 # TODO
 #BuildArchitectures:	noarch
 
-Requires:	%{pkg_name}-python2-cqlshlib = %{version}-%{release}
+Requires:	%{?scl_prefix}%{pkg_name}-python2-cqlshlib = %{version}-%{release}
 Requires:	%{?scl_prefix}%{pkg_name}-java-libs = %{version}-%{release}
 Requires:	%{?scl_prefix}airline
 Provides:	cqlsh = %{cqlsh_version}
