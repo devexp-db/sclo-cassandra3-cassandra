@@ -1,24 +1,7 @@
-From 1639cedbdef479417cc1328b09110cb8ec2b7570 Mon Sep 17 00:00:00 2001
-From: Tomas Repik <trepik@redhat.com>
-Date: Thu, 24 Aug 2017 09:48:18 +0200
-Subject: [PATCH] modify installed scripts
-
----
- bin/cassandra               | 28 ++++++++++++++++--
- bin/cassandra.in.sh         | 70 ++++++++++++++++++++-------------------------
- bin/cqlsh.py                | 16 ++---------
- bin/nodetool                | 38 +++++++++++++-----------
- conf/cassandra-env.sh       | 29 +++++++++----------
- conf/jvm.options            |  2 +-
- tools/bin/cassandra-stress  |  5 +++-
- tools/bin/cassandra-stressd |  5 +++-
- 8 files changed, 102 insertions(+), 91 deletions(-)
-
-diff --git a/bin/cassandra b/bin/cassandra
-index 3206fdc..5e90c65 100755
---- a/bin/cassandra
-+++ b/bin/cassandra
-@@ -71,7 +71,8 @@ if [ "x$CASSANDRA_INCLUDE" = "x" ]; then
+diff -Naur cassandra-3.9.orig/bin/cassandra cassandra-3.9/bin/cassandra
+--- cassandra-3.9.orig/bin/cassandra	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/bin/cassandra	2017-10-05 17:57:07.776197798 +0200
+@@ -71,7 +71,8 @@
                     "$HOME/.cassandra.in.sh" \
                     /usr/share/cassandra/cassandra.in.sh \
                     /usr/local/share/cassandra/cassandra.in.sh \
@@ -28,7 +11,18 @@ index 3206fdc..5e90c65 100755
          if [ -r "$include" ]; then
              . "$include"
              break
-@@ -188,7 +189,7 @@ launch_service()
+@@ -122,6 +123,10 @@
+ 
+ if [ -f "$CASSANDRA_CONF/cassandra-env.sh" ]; then
+     . "$CASSANDRA_CONF/cassandra-env.sh"
++else
++     if [ -f "$CASSANDRA_CONF/../../usr/share/cassandra/cassandra-env.sh" ]; then
++         . "$CASSANDRA_CONF/../../usr/share/cassandra/cassandra-env.sh"
++     fi
+ fi
+ 
+ # Special-case path variables.
+@@ -188,7 +193,7 @@
      props="$3"
      class="$4"
      cassandra_parms="-Dlogback.configurationFile=logback.xml"
@@ -37,7 +31,7 @@ index 3206fdc..5e90c65 100755
      cassandra_parms="$cassandra_parms -Dcassandra.storagedir=$cassandra_storagedir"
  
      if [ "x$pidpath" != "x" ]; then
-@@ -210,6 +211,19 @@ launch_service()
+@@ -210,6 +215,19 @@
      return $?
  }
  
@@ -57,7 +51,7 @@ index 3206fdc..5e90c65 100755
  # Parse any command line options.
  args=`getopt vRfhp:bD:H:E: "$@"`
  eval set -- "$args"
-@@ -283,6 +297,14 @@ fi
+@@ -283,6 +301,14 @@
  # Start up the service
  launch_service "$pidfile" "$foreground" "$properties" "$classname"
  
@@ -73,10 +67,9 @@ index 3206fdc..5e90c65 100755
 +exit 0
  
  # vi:ai sw=4 ts=4 tw=0 et
-diff --git a/bin/cassandra.in.sh b/bin/cassandra.in.sh
-index 92f79c7..720fa59 100644
---- a/bin/cassandra.in.sh
-+++ b/bin/cassandra.in.sh
+diff -Naur cassandra-3.9.orig/bin/cassandra.in.sh cassandra-3.9/bin/cassandra.in.sh
+--- cassandra-3.9.orig/bin/cassandra.in.sh	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/bin/cassandra.in.sh	2017-10-05 17:55:54.167562117 +0200
 @@ -15,62 +15,54 @@
  # limitations under the License.
  
@@ -171,10 +164,9 @@ index 92f79c7..720fa59 100644
 +else
 +    JVM_OPTS="$JVM_OPTS -Djava.library.path=/opt/rh/sclo-cassandra3/root/usr/lib/sigar:/usr/lib:/usr/lib/sigar"
 +fi
-diff --git a/bin/cqlsh.py b/bin/cqlsh.py
-index fd635b1..89bb1af 100644
---- a/bin/cqlsh.py
-+++ b/bin/cqlsh.py
+diff -Naur cassandra-3.9.orig/bin/cqlsh.py cassandra-3.9/bin/cqlsh.py
+--- cassandra-3.9.orig/bin/cqlsh.py	2017-10-05 17:55:19.902266204 +0200
++++ cassandra-3.9/bin/cqlsh.py	2017-10-05 17:55:54.168562126 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/usr/bin/python
@@ -200,7 +192,7 @@ index fd635b1..89bb1af 100644
  from __future__ import with_statement
  
  import cmd
-@@ -234,7 +222,7 @@ optvalues = optparse.Values()
+@@ -234,7 +222,7 @@
  (options, arguments) = parser.parse_args(sys.argv[1:], values=optvalues)
  
  # BEGIN history/config definition
@@ -209,11 +201,10 @@ index fd635b1..89bb1af 100644
  
  if hasattr(options, 'cqlshrc'):
      CONFIG_FILE = options.cqlshrc
-diff --git a/bin/nodetool b/bin/nodetool
-index b6a6fbf..f5ebbaa 100755
---- a/bin/nodetool
-+++ b/bin/nodetool
-@@ -22,22 +22,28 @@ if [ "`basename "$0"`" = 'nodeprobe' ]; then
+diff -Naur cassandra-3.9.orig/bin/nodetool cassandra-3.9/bin/nodetool
+--- cassandra-3.9.orig/bin/nodetool	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/bin/nodetool	2017-10-05 17:58:25.829871559 +0200
+@@ -22,22 +22,28 @@
      echo "***************************************************************" >&2
  fi
  
@@ -256,7 +247,7 @@ index b6a6fbf..f5ebbaa 100755
  # Use JAVA_HOME if set, otherwise look for java in PATH
  if [ -x "$JAVA_HOME/bin/java" ]; then
      JAVA="$JAVA_HOME/bin/java"
-@@ -50,8 +56,8 @@ if [ "x$JAVA" = "x" ]; then
+@@ -50,17 +56,21 @@
      exit 1
  fi
  
@@ -267,11 +258,25 @@ index b6a6fbf..f5ebbaa 100755
      exit 1
  fi
  
-diff --git a/conf/cassandra-env.sh b/conf/cassandra-env.sh
-index 5a02f79..3c98159 100644
---- a/conf/cassandra-env.sh
-+++ b/conf/cassandra-env.sh
-@@ -88,21 +88,17 @@ calculate_heap_sizes()
+ # Run cassandra-env.sh to pick up JMX_PORT
++JVM_OPTS_SAVE=$JVM_OPTS
+ if [ -f "$CASSANDRA_CONF/cassandra-env.sh" ]; then
+-    JVM_OPTS_SAVE=$JVM_OPTS
+     . "$CASSANDRA_CONF/cassandra-env.sh"
+-    JVM_OPTS=$JVM_OPTS_SAVE
++else
++     if [ -f "$CASSANDRA_CONF/../../usr/share/cassandra/cassandra-env.sh" ]; then
++         . "$CASSANDRA_CONF/../../usr/share/cassandra/cassandra-env.sh"
++     fi
+ fi
++JVM_OPTS=$JVM_OPTS_SAVE
+ 
+ # JMX Port passed via cmd line args (-p 9999 / --port 9999 / --port=9999)
+ # should override the value from cassandra-env.sh
+diff -Naur cassandra-3.9.orig/conf/cassandra-env.sh cassandra-3.9/conf/cassandra-env.sh
+--- cassandra-3.9.orig/conf/cassandra-env.sh	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/conf/cassandra-env.sh	2017-10-05 17:55:54.168562126 +0200
+@@ -88,21 +88,17 @@
  
  # Determine the sort of JVM we'll be running on.
  java_ver_output=`"${JAVA:-java}" -version 2>&1`
@@ -299,7 +304,7 @@ index 5a02f79..3c98159 100644
  case "$jvm" in
      OpenJDK)
          JVM_VENDOR=OpenJDK
-@@ -121,9 +117,6 @@ case "$jvm" in
+@@ -121,9 +117,6 @@
          ;;
  esac
  
@@ -309,7 +314,7 @@ index 5a02f79..3c98159 100644
  # Here we create the arguments that will get passed to the jvm when
  # starting cassandra.
  
-@@ -207,7 +200,7 @@ fi
+@@ -207,7 +200,7 @@
  JVM_OPTS="$JVM_OPTS -XX:CompileCommandFile=$CASSANDRA_CONF/hotspot_compiler"
  
  # add the jamm javaagent
@@ -318,7 +323,7 @@ index 5a02f79..3c98159 100644
  
  # set jvm HeapDumpPath with CASSANDRA_HEAPDUMP_DIR
  if [ "x$CASSANDRA_HEAPDUMP_DIR" != "x" ]; then
-@@ -271,7 +264,7 @@ JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/
+@@ -271,7 +264,7 @@
  ## which delegates to the IAuthenticator configured in cassandra.yaml. See the sample JAAS configuration
  ## file cassandra-jaas.config
  #JVM_OPTS="$JVM_OPTS -Dcassandra.jmx.remote.login.config=CassandraLogin"
@@ -327,23 +332,22 @@ index 5a02f79..3c98159 100644
  
  ## Cassandra also ships with a helper for delegating JMX authz calls to the configured IAuthorizer,
  ## uncomment this to use it. Requires one of the two authentication options to be enabled
-@@ -288,7 +281,11 @@ JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/
+@@ -288,7 +281,11 @@
  # Cassandra uses SIGAR to capture OS metrics CASSANDRA-7838
  # for SIGAR we have to set the java.library.path
  # to the location of the native libraries.
 -JVM_OPTS="$JVM_OPTS -Djava.library.path=$CASSANDRA_HOME/lib/sigar-bin"
 +if [ "$JVM_ARCH" = "64-Bit" ]; then
-+    JVM_OPTS="$JVM_OPTS -Djava.library.path=/usr/lib64:/usr/lib64/sigar"
++    JVM_OPTS="$JVM_OPTS -Djava.library.path=/opt/rh/sclo-cassandra3/root/usr/lib64/sigar:/usr/lib64:/usr/lib64/sigar"
 +else
-+    JVM_OPTS="$JVM_OPTS -Djava.library.path=/usr/lib:/usr/lib/sigar"
++    JVM_OPTS="$JVM_OPTS -Djava.library.path=/opt/rh/sclo-cassandra3/root/usr/lib/sigar:/usr/lib:/usr/lib/sigar"
 +fi
  
  JVM_OPTS="$JVM_OPTS $MX4J_ADDRESS"
  JVM_OPTS="$JVM_OPTS $MX4J_PORT"
-diff --git a/conf/jvm.options b/conf/jvm.options
-index 6ccccd3..307ee9f 100644
---- a/conf/jvm.options
-+++ b/conf/jvm.options
+diff -Naur cassandra-3.9.orig/conf/jvm.options cassandra-3.9/conf/jvm.options
+--- cassandra-3.9.orig/conf/jvm.options	2017-10-05 17:55:19.903266212 +0200
++++ cassandra-3.9/conf/jvm.options	2017-10-05 17:55:54.168562126 +0200
 @@ -228,7 +228,7 @@
  -XX:+PrintGCApplicationStoppedTime
  -XX:+PrintPromotionFailure
@@ -353,11 +357,10 @@ index 6ccccd3..307ee9f 100644
  -XX:+UseGCLogFileRotation
  -XX:NumberOfGCLogFiles=10
  -XX:GCLogFileSize=10M
-diff --git a/tools/bin/cassandra-stress b/tools/bin/cassandra-stress
-index 82a3eb5..68fc2ee 100755
---- a/tools/bin/cassandra-stress
-+++ b/tools/bin/cassandra-stress
-@@ -22,7 +22,8 @@ if [ "x$CASSANDRA_INCLUDE" = "x" ]; then
+diff -Naur cassandra-3.9.orig/tools/bin/cassandra-stress cassandra-3.9/tools/bin/cassandra-stress
+--- cassandra-3.9.orig/tools/bin/cassandra-stress	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/tools/bin/cassandra-stress	2017-10-05 17:55:54.168562126 +0200
+@@ -22,7 +22,8 @@
                     "$HOME/.cassandra.in.sh" \
                     /usr/share/cassandra/cassandra.in.sh \
                     /usr/local/share/cassandra/cassandra.in.sh \
@@ -367,7 +370,7 @@ index 82a3eb5..68fc2ee 100755
          if [ -r "$include" ]; then
              . "$include"
              break
-@@ -49,6 +50,8 @@ if [ -z "$CLASSPATH" ]; then
+@@ -49,6 +50,8 @@
      exit 1
  fi
  
@@ -376,11 +379,10 @@ index 82a3eb5..68fc2ee 100755
  "$JAVA" -server -ea -cp "$CLASSPATH" $JVM_OPTS \
          -Dcassandra.storagedir="$cassandra_storagedir" \
          -Dlogback.configurationFile=logback-tools.xml \
-diff --git a/tools/bin/cassandra-stressd b/tools/bin/cassandra-stressd
-index 48fbef6..2109195 100755
---- a/tools/bin/cassandra-stressd
-+++ b/tools/bin/cassandra-stressd
-@@ -23,7 +23,8 @@ if [ "x$CASSANDRA_INCLUDE" = "x" ]; then
+diff -Naur cassandra-3.9.orig/tools/bin/cassandra-stressd cassandra-3.9/tools/bin/cassandra-stressd
+--- cassandra-3.9.orig/tools/bin/cassandra-stressd	2016-09-26 16:02:27.000000000 +0200
++++ cassandra-3.9/tools/bin/cassandra-stressd	2017-10-05 17:55:54.169562135 +0200
+@@ -23,7 +23,8 @@
                     "$HOME/.cassandra.in.sh" \
                     /usr/share/cassandra/cassandra.in.sh \
                     /usr/local/share/cassandra/cassandra.in.sh \
@@ -390,7 +392,7 @@ index 48fbef6..2109195 100755
          if [ -r "$include" ]; then
              . "$include"
              break
-@@ -50,6 +51,8 @@ if [ -z "$CLASSPATH" ]; then
+@@ -50,6 +51,8 @@
      exit 1
  fi
  
@@ -399,5 +401,3 @@ index 48fbef6..2109195 100755
  case "$1" in
    start)
      echo "Starting $DESC: "
--- 
-2.9.5

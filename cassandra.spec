@@ -12,7 +12,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	12%{?dist}
+Release:	14%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -499,6 +499,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Thu Oct 05 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-14
+- fixed centos specific patch
+
 * Thu Oct 05 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-13
 - fixed atinject dependency
 
