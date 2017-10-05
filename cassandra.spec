@@ -8,9 +8,11 @@
 
 %global cqlsh_version 5.0.1
 
+%global daemon_name %{?scl_prefix}%{pkg_name}
+
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	11%{?dist}
+Release:	12%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -32,7 +34,7 @@ Patch0:		%{pkg_name}-%{version}-build.patch
 # https://issues.apache.org/jira/browse/CASSANDRA-12994
 Patch1:		%{pkg_name}-%{version}-airline0.7.patch
 # modify installed scripts
-Patch2:		%{pkg_name}-%{version}-scripts.patch
+Patch2:		centos-%{pkg_name}-scripts.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1340876
 # remove "Open" infix from all hppc classes
 # https://issues.apache.org/jira/browse/CASSANDRA-12995X
@@ -100,7 +102,7 @@ BuildRequires:	%{?scl_prefix}guava
 # using high-scale-lib from stephenc, no Cassandra original
 #BuildRequires:	 mvn(com.boundary:high-scale-lib)
 BuildRequires:	%{?scl_prefix}high-scale-lib
-# using repackaging of the snowball stemmer so that it's available on Maven Central 
+# using repackaging of the snowball stemmer so that it's available on Maven Central
 #BuildRequires:	mvn(com.github.rholder:snowball-stemmer)
 BuildRequires:	%{?scl_prefix}snowball-java
 # probably won't need in the future
@@ -138,6 +140,28 @@ Requires(pre):	shadow-utils
 Requires:	%{?scl_prefix}sigar
 Requires:	%{?scl_prefix}%{pkg_name}-java-libs = %{version}-%{release}
 Requires:	%{?scl_prefix}jctools
+Requires:	%{?scl_prefix}snakeyaml
+Requires:	%{?scl_prefix}guava
+Requires:	%{?scl_prefix}lz4-java
+Requires:	%{?scl_prefix}json_simple
+Requires:	%{?scl_prefix}snappy-java
+Requires:	%{?scl_prefix}jamm
+Requires:	%{?scl_prefix}sigar-java
+Requires:	%{?scl_prefix}concurrentlinkedhashmap-lru
+Requires:	%{?scl_prefix}metrics
+Requires:	%{?scl_prefix}metrics-reporter-config
+Requires:	%{?scl_prefix}logback
+Requires:	%{?scl_prefix}antlr3-java
+Requires:	%{?scl_prefix}slf4j
+Requires:	%{?scl_prefix}jackson
+Requires:	%{?scl_prefix}netty
+Requires:	%{?scl_prefix}high-scale-lib
+Requires:	%{?scl_prefix}stream-lib
+Requires:	%{?scl_prefix}caffeine
+Requires:	%{?scl_prefix}jBCrypt
+Requires:	%{?scl_prefix_maven}jna
+Requires:	%{?scl_prefix_java_common}apache-commons-codec
+Requires:	%{?scl_prefix_java_common}apache-commons-lang3
 Requires:	procps-ng
 %{?scl:Requires:	nc}
 %{!?scl:Requires:	nmap-ncat}
@@ -163,13 +187,13 @@ Parent POM for %{pkg_name}.
 Summary:	Python cqlsh library for %{pkg_name}
 BuildRequires:	python2-devel
 BuildRequires:	Cython
-Requires:	python2-cassandra-driver
+Requires:	%{?scl_prefix}python2-cassandra-driver
 # optional timestamps in different timezones dependency
 Requires:	pytz
 %{?python_provide:%python_provide python2-cqlshlib}
 
 %description python2-cqlshlib
-A python library required by the commandline client used to communicate with 
+A python library required by the commandline client used to communicate with
 %{pkg_name} server.
 
 %if %stress
@@ -321,15 +345,21 @@ rm -r src/java/org/apache/cassandra/hadoop
 %endif
 %{?scl:EOF}
 
+# If SCL, fix the path of binary in the systemd unit file and add 'scl enable' command
+%{?scl:sed -i -e 's:/usr/bin:%{_bindir}:g' %{SOURCE2}}
+%{?scl:sed -i -e 's:ExecStart=:ExecStart=/usr/bin/scl enable sclo-cassandra3 rh-java-common rh-maven33 -- :g' %{SOURCE2}}
+
 %build
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
-ant jar javadoc -Drelease=true 
+ant jar javadoc -Drelease=true
 %{?scl:EOF}
 
 # Build the cqlshlib Python module
+%{?scl:scl enable %{scl} - << "EOF"}
 pushd pylib
 %{__python2} setup.py build
 popd
+%{?scl:EOF}
 
 %install
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
@@ -341,12 +371,12 @@ popd
 %endif
 
 %mvn_install -J build/javadoc/
-%{?scl:EOF}
 
 # Install the cqlshlib Python module
 pushd pylib
-%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot} --prefix %{?_prefix}
 popd
+%{?scl:EOF}
 
 # create data and log dirs
 mkdir -p %{buildroot}%{_sharedstatedir}/%{pkg_name}/data
@@ -356,7 +386,6 @@ mkdir -p %{buildroot}%{_localstatedir}/log/%{pkg_name}
 install -p -D -m 644 "%{SOURCE1}"  %{buildroot}%{_sysconfdir}/logrotate.d/%{pkg_name}
 install -p -D -m 755 bin/%{pkg_name} %{buildroot}%{_bindir}/%{pkg_name}
 install -p -D -m 755 bin/%{pkg_name}.in.sh %{buildroot}%{_datadir}/%{pkg_name}/%{pkg_name}.in.sh
-install -p -D -m 755 bin/nodetool.in.sh %{buildroot}%{_datadir}/%{pkg_name}/nodetool.in.sh
 install -p -D -m 755 conf/%{pkg_name}-env.sh %{buildroot}%{_datadir}/%{pkg_name}/%{pkg_name}-env.sh
 install -p -D -m 644 conf/%{pkg_name}.yaml %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}.yaml
 install -p -D -m 644 conf/%{pkg_name}-jaas.config %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}-jaas.config
@@ -385,7 +414,7 @@ install -p -D -m 755 tools/bin/%{pkg_name}-stressd %{buildroot}%{_bindir}/%{pkg_
 %endif
 
 # install cassandra.service
-install -p -D -m 644 "%{SOURCE2}"  %{buildroot}%{_unitdir}/%{pkg_name}.service
+install -p -D -m 644 "%{SOURCE2}"  %{buildroot}%{_unitdir}/%{daemon_name}.service
 
 %pre server
 getent group %{pkg_name} >/dev/null || groupadd -f -g %{gid_uid} -r %{pkg_name}
@@ -401,13 +430,13 @@ fi
 exit 0
 
 %post server
-%systemd_post %{pkg_name}.service
+%systemd_post %{daemon_name}.service
 
 %preun server
-%systemd_preun %{pkg_name}.service
+%systemd_preun %{daemon_name}.service
 
 %postun server
-%systemd_postun_with_restart %{pkg_name}.service
+%systemd_postun_with_restart %{daemon_name}.service
 
 %files -f .mfiles-client
 %doc README.asc CHANGES.txt NEWS.txt conf/cqlshrc.sample
@@ -426,7 +455,6 @@ exit 0
 %attr(755, root, root) %{_bindir}/sstablerepairedset
 %attr(755, root, root) %{_bindir}/sstablesplit
 %attr(755, root, root) %{_bindir}/cqlsh
-%{_datadir}/%{pkg_name}/nodetool.in.sh
 
 %files java-libs -f .mfiles
 %license LICENSE.txt NOTICE.txt
@@ -448,7 +476,7 @@ exit 0
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/logback.xml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/metrics-reporter-config-sample.yaml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/logrotate.d/%{pkg_name}
-%{_unitdir}/%{pkg_name}.service
+%{_unitdir}/%{daemon_name}.service
 
 %files parent -f .mfiles-parent
 %license LICENSE.txt NOTICE.txt
@@ -470,6 +498,11 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Tue Aug 22 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-12
+- fixed runtime dependencies (requires)
+- fixed service (systemd) related stuff
+- apply centos specific patch
+
 * Mon Aug 21 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-11
 - rebuilt
 
