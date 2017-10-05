@@ -55,6 +55,7 @@ Patch7:		%{pkg_name}-%{version}-remove-thrift.patch
 Requires:	%{?scl_prefix}%{pkg_name}-python2-cqlshlib = %{version}-%{release}
 Requires:	%{?scl_prefix}%{pkg_name}-java-libs = %{version}-%{release}
 Requires:	%{?scl_prefix}airline
+Requires:	%{?scl_prefix_java_common}atinject
 Provides:	cqlsh = %{cqlsh_version}
 
 %description
@@ -498,6 +499,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Thu Oct 05 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-13
+- fixed atinject dependency
+
 * Tue Aug 22 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-12
 - fixed runtime dependencies (requires)
 - fixed service (systemd) related stuff

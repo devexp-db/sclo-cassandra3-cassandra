@@ -247,7 +247,7 @@ index b6a6fbf..f5ebbaa 100755
 +# The java classpath (required)
 +CLASSPATH="$CASSANDRA_CONF"
 +
-+DEPS=( airline cassandra/cassandra-all guava javax.inject slf4j/api jackson/jackson-mapper-asl jackson/jackson-core-asl logback/logback-classic logback/logback-core commons-lang3 high-scale-lib/high-scale-lib antlr3-runtime metrics concurrentlinkedhashmap-lru snakeyaml commons-codec )
++DEPS=( airline cassandra/cassandra-all guava atinject slf4j/api jackson/jackson-mapper-asl jackson/jackson-core-asl logback/logback-classic logback/logback-core commons-lang3 high-scale-lib/high-scale-lib antlr3-runtime metrics concurrentlinkedhashmap-lru snakeyaml commons-codec )
 +
 +for dep in "${DEPS[@]}"; do
 +    CLASSPATH="$CLASSPATH:`build-classpath $dep`"
