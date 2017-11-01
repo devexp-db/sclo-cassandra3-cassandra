@@ -12,7 +12,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	14%{?dist}
+Release:	15%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -499,6 +499,11 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Wed Nov 01 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-15
+- fixed problem related to listen_address and wait_for_service script
+  function (#1507524)
+- remove wrong paths not included in SCL paths (#1507862)
+
 * Thu Oct 05 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-14
 - fixed centos specific patch
 
