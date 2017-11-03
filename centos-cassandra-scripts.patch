@@ -79,7 +79,7 @@ diff -Naur cassandra-3.9-orig/bin/cassandra.in.sh cassandra-3.9/bin/cassandra.in
  
  if [ "x$CASSANDRA_HOME" = "x" ]; then
 -    CASSANDRA_HOME="`dirname "$0"`/.."
-+    CASSANDRA_HOME=~/cassandra
++    CASSANDRA_HOME="/var/opt/rh/sclo-cassandra3/lib/cassandra"
  fi
  
  # The directory where Cassandra's configs live (required)

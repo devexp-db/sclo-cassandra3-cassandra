@@ -12,7 +12,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.9
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -421,10 +421,10 @@ install -p -D -m 644 "%{SOURCE2}"  %{buildroot}%{_unitdir}/%{daemon_name}.servic
 getent group %{pkg_name} >/dev/null || groupadd -f -g %{gid_uid} -r %{pkg_name}
 if ! getent passwd %{pkg_name} >/dev/null ; then
   if ! getent passwd %{gid_uid} >/dev/null ; then
-    useradd -r -u %{gid_uid} -g %{pkg_name} -d %{_sharedstatedir}/%{pkg_name}/data \
+    useradd -r -u %{gid_uid} -g %{pkg_name} -d %{_root_localstatedir}/lib/%{pkg_name}/data \
       -s /sbin/nologin -c "Cassandra Database Server" %{pkg_name}
   else
-    useradd -r -g %{pkg_name} -d %{_sharedstatedir}/%{pkg_name}/data -s /sbin/nologin \
+    useradd -r -g %{pkg_name} -d %{_root_localstatedir}/lib/%{pkg_name}/data -s /sbin/nologin \
       -c "Cassandra Database Server" %{pkg_name}
   fi
 fi
@@ -462,7 +462,7 @@ exit 0
 
 %files server
 %license LICENSE.txt NOTICE.txt
-%dir %attr(711, root, root) %{_sharedstatedir}/%{pkg_name}
+%dir %attr(700, %{pkg_name}, %{pkg_name}) %{_sharedstatedir}/%{pkg_name}
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_sharedstatedir}/%{pkg_name}/data
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_localstatedir}/log/%{pkg_name}
 %{_bindir}/%{pkg_name}
@@ -499,6 +499,10 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Fri Nov 03 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-16
+- fixed homedir path
+- fixed %{_sharedstatedir}/%{pkg_name} ownership/permissions
+
 * Wed Nov 01 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-15
 - fixed problem related to listen_address and wait_for_service script
   function (#1507524)
