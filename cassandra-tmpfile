@@ -1,3 +1,0 @@
-# make sure the cassandra dir is owned by cassandra so the process running as
-# cassandra can write the pid there
-d /run/cassandra 0755 cassandra root -

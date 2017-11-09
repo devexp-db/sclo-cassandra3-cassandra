@@ -1,6 +1,6 @@
 [Unit]
 Description=Cassandra database server for high-scale application
-Documentation=http://docs.datastax.com
+Documentation=http://cassandra.apache.org/doc/latest/
 After=syslog.target network.target
 
 [Service]
@@ -8,10 +8,9 @@ Type=forking
 User=cassandra
 EnvironmentFile=-/etc/sysconfig/cassandra
 ExecStart=/usr/bin/cassandra $OPTIONS
-
-[Manager]
-DefaultTimeoutStartSec=120
-DefaultTimeoutStopSec=9000
+SuccessExitStatus=0 143
+TimeoutStartSec=120
+TimeoutStopSec=9000
 
 [Install]
 WantedBy=multi-user.target

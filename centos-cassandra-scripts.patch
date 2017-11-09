@@ -55,7 +55,7 @@ diff -Naur cassandra-3.9-orig/bin/cassandra cassandra-3.9/bin/cassandra
  # Parse any command line options.
  args=`getopt vRfhp:bD:H:E: "$@"`
  eval set -- "$args"
-@@ -283,6 +301,14 @@
+@@ -276,6 +289,14 @@
  # Start up the service
  launch_service "$pidfile" "$foreground" "$properties" "$classname"
  
@@ -196,7 +196,7 @@ diff -Naur cassandra-3.9-orig/bin/cqlsh.py cassandra-3.9/bin/cqlsh.py
  from __future__ import with_statement
  
  import cmd
-@@ -234,7 +222,7 @@
+@@ -237,7 +225,7 @@
  (options, arguments) = parser.parse_args(sys.argv[1:], values=optvalues)
  
  # BEGIN history/config definition
@@ -242,7 +242,7 @@ diff -Naur cassandra-3.9-orig/bin/nodetool cassandra-3.9/bin/nodetool
 +# The java classpath (required)
 +CLASSPATH="$CASSANDRA_CONF"
 +
-+DEPS=( airline cassandra/cassandra-all guava atinject slf4j/api jackson/jackson-mapper-asl jackson/jackson-core-asl logback/logback-classic logback/logback-core commons-lang3 high-scale-lib/high-scale-lib antlr3-runtime metrics concurrentlinkedhashmap-lru snakeyaml commons-codec )
++DEPS=( airline cassandra/cassandra-all guava atinject slf4j/api jackson/jackson-mapper-asl jackson/jackson-core-asl logback/logback-classic logback/logback-core commons-lang3 high-scale-lib/high-scale-lib antlr3-runtime metrics concurrentlinkedhashmap-lru snakeyaml commons-codec netty/netty-all)
 +
 +for dep in "${DEPS[@]}"; do
 +    CLASSPATH="$CLASSPATH:`build-classpath $dep`"
@@ -251,7 +251,7 @@ diff -Naur cassandra-3.9-orig/bin/nodetool cassandra-3.9/bin/nodetool
  # Use JAVA_HOME if set, otherwise look for java in PATH
  if [ -x "$JAVA_HOME/bin/java" ]; then
      JAVA="$JAVA_HOME/bin/java"
-@@ -50,17 +56,21 @@
+@@ -50,19 +56,23 @@
      exit 1
  fi
  
@@ -264,15 +264,19 @@ diff -Naur cassandra-3.9-orig/bin/nodetool cassandra-3.9/bin/nodetool
  
  # Run cassandra-env.sh to pick up JMX_PORT
 +JVM_OPTS_SAVE=$JVM_OPTS
++MAX_HEAP_SIZE_SAVE=$MAX_HEAP_SIZE
  if [ -f "$CASSANDRA_CONF/cassandra-env.sh" ]; then
 -    JVM_OPTS_SAVE=$JVM_OPTS
+-    MAX_HEAP_SIZE_SAVE=$MAX_HEAP_SIZE
      . "$CASSANDRA_CONF/cassandra-env.sh"
+-    MAX_HEAP_SIZE=$MAX_HEAP_SIZE_SAVE
 -    JVM_OPTS=$JVM_OPTS_SAVE
 +else
 +     if [ -f "/opt/rh/sclo-cassandra3/root/usr/share/cassandra/cassandra-env.sh" ]; then
 +         . "/opt/rh/sclo-cassandra3/root/usr/share/cassandra/cassandra-env.sh"
 +     fi
  fi
++MAX_HEAP_SIZE=$MAX_HEAP_SIZE_SAVE
 +JVM_OPTS=$JVM_OPTS_SAVE
  
  # JMX Port passed via cmd line args (-p 9999 / --port 9999 / --port=9999)
@@ -352,7 +356,7 @@ diff -Naur cassandra-3.9-orig/conf/cassandra-env.sh cassandra-3.9/conf/cassandra
 diff -Naur cassandra-3.9-orig/conf/jvm.options cassandra-3.9/conf/jvm.options
 --- cassandra-3.9-orig/conf/jvm.options	2017-10-31 18:27:01.350267031 +0100
 +++ cassandra-3.9/conf/jvm.options	2017-10-31 18:27:43.336614564 +0100
-@@ -228,7 +228,7 @@
+@@ -233,7 +233,7 @@
  -XX:+PrintGCApplicationStoppedTime
  -XX:+PrintPromotionFailure
  #-XX:PrintFLSStatistics=1

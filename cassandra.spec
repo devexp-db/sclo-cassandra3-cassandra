@@ -11,8 +11,8 @@
 %global daemon_name %{?scl_prefix}%{pkg_name}
 
 Name:		%{?scl_prefix}cassandra
-Version:	3.9
-Release:	16%{?dist}
+Version:	3.11.0
+Release:	1%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -21,12 +21,10 @@ URL:		http://cassandra.apache.org/
 Source0:	https://github.com/apache/%{pkg_name}/archive/%{pkg_name}-%{version}.tar.gz
 Source1:	%{pkg_name}.logrotate
 Source2:	%{pkg_name}.service
-Source3:	%{pkg_name}-tmpfile
 # pom files are not generated but used are the ones from mavencentral
 # because of orphaned maven-ant-task package doing the work in this case
-Source4:	http://central.maven.org/maven2/org/apache/%{pkg_name}/%{pkg_name}-all/%{version}/%{pkg_name}-all-%{version}.pom
-Source6:	http://central.maven.org/maven2/org/apache/%{pkg_name}/%{pkg_name}-clientutil/%{version}/%{pkg_name}-clientutil-%{version}.pom
-Source7:	http://central.maven.org/maven2/org/apache/%{pkg_name}/%{pkg_name}-parent/%{version}/%{pkg_name}-parent-%{version}.pom
+Source3:	http://central.maven.org/maven2/org/apache/%{pkg_name}/%{pkg_name}-all/%{version}/%{pkg_name}-all-%{version}.pom
+Source4:	http://central.maven.org/maven2/org/apache/%{pkg_name}/%{pkg_name}-parent/%{version}/%{pkg_name}-parent-%{version}.pom
 
 # fix encoding, naming, classpaths and dependencies
 Patch0:		%{pkg_name}-%{version}-build.patch
@@ -42,9 +40,6 @@ Patch3:		%{pkg_name}-%{version}-hppc.patch
 # add two more parameters for SubstituteLogger constructor in slf4j
 # https://issues.apache.org/jira/browse/CASSANDRA-12996
 Patch5:		%{pkg_name}-%{version}-slf4j.patch
-# remove net.mintern:primitive as it will be removed in next upstream release
-# https://github.com/apache/cassandra/commit/8f0d5a295d34972ef719574df4aa1b59bf9e8478
-Patch6:		%{pkg_name}-%{version}-remove-primitive.patch
 # remove thrift as it will be removed in next upstream major release
 # https://github.com/apache/cassandra/commit/4881d9c308ccd6b5ca70925bf6ebedb70e7705fc
 Patch7:		%{pkg_name}-%{version}-remove-thrift.patch
@@ -59,10 +54,10 @@ Requires:	%{?scl_prefix_java_common}atinject
 Provides:	cqlsh = %{cqlsh_version}
 
 %description
-This package contains all client utilities for %{pkg_name}. These are:
-1. Command line client used to communicate with %{pkg_name} server called cqlsh.
+This package contains all client utilities for Cassandra. These are:
+1. Command line client used to communicate with Cassandra server called cqlsh.
 2. Command line interface for managing cluster called nodetool.
-3. Tools for using, upgrading, and changing %{pkg_name} SSTables.
+3. Tools for using, upgrading, and changing SSTables.
 
 %package java-libs
 Summary:	Java libraries for %{pkg_name}
@@ -92,14 +87,15 @@ BuildRequires:	%{?scl_prefix}caffeine
 BuildRequires:	%{?scl_prefix}hppc
 BuildRequires:	%{?scl_prefix}lz4-java
 BuildRequires:	%{?scl_prefix}snappy-java
+BuildRequires:	%{?scl_prefix}cassandra-java-driver
 BuildRequires:	%{?scl_prefix}ohc
 BuildRequires:	%{?scl_prefix}ohc-core-j8
 BuildRequires:	%{?scl_prefix}netty
-BuildRequires:	%{?scl_prefix}cassandra-java-driver
 BuildRequires:	%{?scl_prefix}jflex
 BuildRequires:	%{?scl_prefix}apache-commons-math
 BuildRequires:	%{?scl_prefix_maven}jna
 BuildRequires:	%{?scl_prefix}guava
+BuildRequires:	%{?scl_prefix}jctools
 # using high-scale-lib from stephenc, no Cassandra original
 #BuildRequires:	 mvn(com.boundary:high-scale-lib)
 BuildRequires:	%{?scl_prefix}high-scale-lib
@@ -123,7 +119,7 @@ BuildRequires:	%{?scl_prefix_java_common}java_cup
 BuildRequires:	%{?scl_prefix_java_common}atinject
 BuildRequires:	%{?scl_prefix}slf4j
 
-# temporarly removed as it is optional
+# temporarly removed because they are optional and missing in fedora
 # using hadoop-common instead of hadoop-core, no Cassandra original
 #BuildRequires:	mvn(org.apache.hadoop:hadoop-core)
 #BuildRequires:	hadoop-common
@@ -238,9 +234,8 @@ find -name "*py.class" -print -delete
 
 # copy pom files
 mkdir build
-cp -p %{SOURCE4} build/%{pkg_name}-%{version}.pom
-cp -p %{SOURCE6} build/%{pkg_name}-clientutil-%{version}.pom
-cp -p %{SOURCE7} build/%{pkg_name}-%{version}-parent.pom
+cp -p %{SOURCE3} build/%{pkg_name}-%{version}.pom
+cp -p %{SOURCE4} build/%{pkg_name}-%{version}-parent.pom
 
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 set -e -x
@@ -262,22 +257,20 @@ build-jar-repository lib compile-command-annotations
 build-jar-repository lib high-scale-lib/high-scale-lib
 build-jar-repository lib cassandra-java-driver/cassandra-driver-core
 build-jar-repository lib netty/netty-all
+build-jar-repository lib netty/netty-common
+build-jar-repository lib netty/netty-transport-native-unix-common
 build-jar-repository lib netty/netty-transport-native-epoll
 build-jar-repository lib lz4-java
 build-jar-repository lib snappy-java
 build-jar-repository lib jBCrypt
 build-jar-repository lib concurrentlinkedhashmap-lru
 build-jar-repository lib ohc/ohc-core
-# temporarly removed because it is optional
-#build-jar-repository lib hadoop/hadoop-common
 build-jar-repository lib snakeyaml
 build-jar-repository lib jackson/jackson-core-asl
 build-jar-repository lib jackson/jackson-mapper-asl
 build-jar-repository lib ecj
 build-jar-repository lib objectweb-asm/asm
 build-jar-repository lib commons-math3
-# temporarly removed because it is optional
-#build-jar-repository lib hadoop/hadoop-mapreduce-client-core
 build-jar-repository lib concurrent-trees
 build-jar-repository lib hppc
 build-jar-repository lib snowball-java
@@ -297,18 +290,24 @@ build-jar-repository lib jflex
 build-jar-repository lib java_cup
 build-jar-repository lib commons-codec
 build-jar-repository lib caffeine
+build-jar-repository lib jctools
 # test dependencies
 build-jar-repository lib junit
 build-jar-repository lib ant/ant
 build-jar-repository lib ant/ant-junit
 build-jar-repository lib hamcrest/core
 build-jar-repository lib apache-commons-io
+build-jar-repository lib byteman/byteman
 build-jar-repository lib byteman/byteman-bmunit
 build-jar-repository lib commons-collections
 build-jar-repository lib jmh/jmh-core
 build-jar-repository lib HdrHistogram
 # binaries dependencies
 build-jar-repository lib atinject
+# temporarly removed because they are optional and missing in fedora
+#build-jar-repository lib hadoop/hadoop-common
+#build-jar-repository lib hadoop/hadoop-mapreduce-client-core
+#build-jar-repository lib hadoop/hadoop-annotations
 
 # build patch
 %patch0 -p1
@@ -320,11 +319,10 @@ build-jar-repository lib atinject
 %patch3 -p1
 # slf4j patch
 %patch5 -p1
-# remove primitive patch
-%patch6 -p1
 
 # remove hadoop
 rm -r src/java/org/apache/cassandra/hadoop
+sed -i '/hadoop/d' test/microbench/org/apache/cassandra/test/microbench/CompactionBench.java
 # remove hadoop also from pom files
 %pom_remove_dep -r org.apache.hadoop: build/%{pkg_name}-%{version}.pom
 
@@ -340,7 +338,6 @@ rm -r src/java/org/apache/cassandra/hadoop
 %pom_remove_dep -r org.apache.thrift:libthrift build/%{pkg_name}-%{version}.pom
 
 %mvn_package "org.apache.%{pkg_name}:%{pkg_name}-parent:pom:%{version}" parent
-%mvn_package ":%{pkg_name}-clientutil" client
 %if %stress
 %mvn_package ":%{pkg_name}-stress" stress
 %endif
@@ -366,7 +363,6 @@ popd
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_artifact build/%{pkg_name}-%{version}-parent.pom
 %mvn_artifact build/%{pkg_name}-%{version}.pom build/%{pkg_name}-%{version}.jar
-%mvn_artifact build/%{pkg_name}-clientutil-%{version}.pom build/%{pkg_name}-clientutil-%{version}.jar
 %if %stress
 %mvn_artifact org.apache.%{pkg_name}:%{pkg_name}-stress:%{version} build/tools/lib/%{pkg_name}-stress.jar
 %endif
@@ -395,6 +391,8 @@ install -p -D -m 644 conf/jvm.options %{buildroot}%{_sysconfdir}/%{pkg_name}/jvm
 install -p -D -m 644 conf/logback-tools.xml %{buildroot}%{_sysconfdir}/%{pkg_name}/logback-tools.xml
 install -p -D -m 644 conf/logback.xml %{buildroot}%{_sysconfdir}/%{pkg_name}/logback.xml
 install -p -D -m 644 conf/metrics-reporter-config-sample.yaml %{buildroot}%{_sysconfdir}/%{pkg_name}/metrics-reporter-config-sample.yaml
+install -p -D -m 440 conf/cqlshrc.sample %{buildroot}%{_sysconfdir}/%{pkg_name}/cqlshrc
+install -p -D -m 644 conf/hotspot_compiler %{buildroot}%{_sysconfdir}/%{pkg_name}/hotspot_compiler
 install -p -D -m 755 bin/cqlsh.py %{buildroot}%{_bindir}/cqlsh
 install -p -D -m 755 bin/nodetool %{buildroot}%{_bindir}/nodetool
 install -p -D -m 755 bin/sstableloader %{buildroot}%{_bindir}/sstableloader
@@ -439,8 +437,8 @@ exit 0
 %postun server
 %systemd_postun_with_restart %{daemon_name}.service
 
-%files -f .mfiles-client
-%doc README.asc CHANGES.txt NEWS.txt conf/cqlshrc.sample
+%files
+%doc README.asc CHANGES.txt NEWS.txt
 %license LICENSE.txt NOTICE.txt
 %attr(755, root, root) %{_bindir}/nodetool
 %attr(755, root, root) %{_bindir}/sstableloader
@@ -456,18 +454,20 @@ exit 0
 %attr(755, root, root) %{_bindir}/sstablerepairedset
 %attr(755, root, root) %{_bindir}/sstablesplit
 %attr(755, root, root) %{_bindir}/cqlsh
+%config(noreplace) %attr(440, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/cqlshrc
 
 %files java-libs -f .mfiles
 %license LICENSE.txt NOTICE.txt
 
 %files server
+%doc README.asc CHANGES.txt NEWS.txt
 %license LICENSE.txt NOTICE.txt
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_sharedstatedir}/%{pkg_name}
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_sharedstatedir}/%{pkg_name}/data
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_localstatedir}/log/%{pkg_name}
 %{_bindir}/%{pkg_name}
 %{_datadir}/%{pkg_name}/%{pkg_name}.in.sh
-%{_datadir}/%{pkg_name}/%{pkg_name}-env.sh
+%config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_datadir}/%{pkg_name}/%{pkg_name}-env.sh
 %dir %attr(700, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}.yaml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}-jaas.config
@@ -477,6 +477,7 @@ exit 0
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/logback.xml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/metrics-reporter-config-sample.yaml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/logrotate.d/%{pkg_name}
+%config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/hotspot_compiler
 %{_unitdir}/%{daemon_name}.service
 
 %files parent -f .mfiles-parent
@@ -499,6 +500,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Wed Nov 09 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.11.0-1
+- Update to 3.11.0
+
 * Fri Nov 03 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-16
 - fixed homedir path
 - fixed %{_sharedstatedir}/%{pkg_name} ownership/permissions

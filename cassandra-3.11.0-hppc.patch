@@ -1,0 +1,237 @@
+From a18df7df3060500a3000991fd50657071a3b19e8 Mon Sep 17 00:00:00 2001
+From: Tomas Repik <trepik@redhat.com>
+Date: Wed, 12 Jul 2017 13:26:53 +0200
+Subject: [PATCH] remove Open infix from all hppc classes
+
+---
+ .../index/sasi/analyzer/StandardAnalyzer.java          |  4 ++--
+ .../index/sasi/disk/DynamicTokenTreeBuilder.java       |  6 +++---
+ .../cassandra/index/sasi/disk/OnDiskIndexBuilder.java  |  2 +-
+ .../apache/cassandra/index/sasi/disk/TokenTree.java    |  6 +++---
+ .../cassandra/index/sasi/memory/KeyRangeIterator.java  |  6 +++---
+ .../cassandra/index/sasi/disk/TokenTreeTest.java       | 18 +++++++++---------
+ .../cassandra/index/sasi/utils/LongIterator.java       |  4 ++--
+ .../sasi/utils/RangeIntersectionIteratorTest.java      |  4 ++--
+ 8 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/src/java/org/apache/cassandra/index/sasi/analyzer/StandardAnalyzer.java b/src/java/org/apache/cassandra/index/sasi/analyzer/StandardAnalyzer.java
+index 3b58bf9..52c1490 100644
+--- a/src/java/org/apache/cassandra/index/sasi/analyzer/StandardAnalyzer.java
++++ b/src/java/org/apache/cassandra/index/sasi/analyzer/StandardAnalyzer.java
+@@ -34,7 +34,7 @@ import org.apache.cassandra.utils.ByteBufferUtil;
+ import com.google.common.annotations.VisibleForTesting;
+ 
+ import com.carrotsearch.hppc.IntObjectMap;
+-import com.carrotsearch.hppc.IntObjectOpenHashMap;
++import com.carrotsearch.hppc.IntObjectHashMap;
+ 
+ public class StandardAnalyzer extends AbstractAnalyzer
+ {
+@@ -49,7 +49,7 @@ public class StandardAnalyzer extends AbstractAnalyzer
+         KATAKANA(12),
+         HANGUL(13);
+ 
+-        private static final IntObjectMap<TokenType> TOKENS = new IntObjectOpenHashMap<>();
++        private static final IntObjectMap<TokenType> TOKENS = new IntObjectHashMap<>();
+ 
+         static
+         {
+diff --git a/src/java/org/apache/cassandra/index/sasi/disk/DynamicTokenTreeBuilder.java b/src/java/org/apache/cassandra/index/sasi/disk/DynamicTokenTreeBuilder.java
+index 2ddfd89..0e906e2 100644
+--- a/src/java/org/apache/cassandra/index/sasi/disk/DynamicTokenTreeBuilder.java
++++ b/src/java/org/apache/cassandra/index/sasi/disk/DynamicTokenTreeBuilder.java
+@@ -23,7 +23,7 @@ import java.util.*;
+ import org.apache.cassandra.utils.AbstractIterator;
+ import org.apache.cassandra.utils.Pair;
+ 
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ import com.carrotsearch.hppc.cursors.LongCursor;
+ 
+@@ -49,7 +49,7 @@ public class DynamicTokenTreeBuilder extends AbstractTokenTreeBuilder
+     {
+         LongSet found = tokens.get(token);
+         if (found == null)
+-            tokens.put(token, (found = new LongOpenHashSet(2)));
++            tokens.put(token, (found = new LongHashSet(2)));
+ 
+         found.add(keyPosition);
+     }
+@@ -70,7 +70,7 @@ public class DynamicTokenTreeBuilder extends AbstractTokenTreeBuilder
+         {
+             LongSet found = tokens.get(newEntry.getKey());
+             if (found == null)
+-                tokens.put(newEntry.getKey(), (found = new LongOpenHashSet(4)));
++                tokens.put(newEntry.getKey(), (found = new LongHashSet(4)));
+ 
+             for (LongCursor offset : newEntry.getValue())
+                 found.add(offset.value);
+diff --git a/src/java/org/apache/cassandra/index/sasi/disk/OnDiskIndexBuilder.java b/src/java/org/apache/cassandra/index/sasi/disk/OnDiskIndexBuilder.java
+index 0298539..21e88e6 100644
+--- a/src/java/org/apache/cassandra/index/sasi/disk/OnDiskIndexBuilder.java
++++ b/src/java/org/apache/cassandra/index/sasi/disk/OnDiskIndexBuilder.java
+@@ -189,7 +189,7 @@ public class OnDiskIndexBuilder
+         minKey = (minKey == null || keyComparator.compare(minKey, key.getKey()) > 0) ? key.getKey() : minKey;
+         maxKey = (maxKey == null || keyComparator.compare(maxKey, key.getKey()) < 0) ? key.getKey() : maxKey;
+ 
+-        // 60 ((boolean(1)*4) + (long(8)*4) + 24) bytes for the LongOpenHashSet created when the keyPosition was added
++        // 60 ((boolean(1)*4) + (long(8)*4) + 24) bytes for the LongHashSet created when the keyPosition was added
+         // + 40 bytes for the TreeMap.Entry + 8 bytes for the token (key).
+         // in the case of hash collision for the token we may overestimate but this is extremely rare
+         estimatedBytes += 60 + 40 + 8;
+diff --git a/src/java/org/apache/cassandra/index/sasi/disk/TokenTree.java b/src/java/org/apache/cassandra/index/sasi/disk/TokenTree.java
+index c69ce00..3a401ca 100644
+--- a/src/java/org/apache/cassandra/index/sasi/disk/TokenTree.java
++++ b/src/java/org/apache/cassandra/index/sasi/disk/TokenTree.java
+@@ -27,7 +27,7 @@ import org.apache.cassandra.index.sasi.utils.MappedBuffer;
+ import org.apache.cassandra.index.sasi.utils.RangeIterator;
+ import org.apache.cassandra.utils.MergeIterator;
+ 
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ import com.google.common.annotations.VisibleForTesting;
+ import com.google.common.base.Function;
+@@ -410,7 +410,7 @@ public class TokenTree
+ 
+         public LongSet getOffsets()
+         {
+-            LongSet offsets = new LongOpenHashSet(4);
++            LongSet offsets = new LongHashSet(4);
+             for (TokenInfo i : info)
+             {
+                 for (long offset : i.fetchOffsets())
+@@ -520,4 +520,4 @@ public class TokenTree
+             return index < offsets.length ? keyFetcher.apply(offsets[index++]) : endOfData();
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/java/org/apache/cassandra/index/sasi/memory/KeyRangeIterator.java b/src/java/org/apache/cassandra/index/sasi/memory/KeyRangeIterator.java
+index a2f2c0e..0f39db0 100644
+--- a/src/java/org/apache/cassandra/index/sasi/memory/KeyRangeIterator.java
++++ b/src/java/org/apache/cassandra/index/sasi/memory/KeyRangeIterator.java
+@@ -29,7 +29,7 @@ import org.apache.cassandra.index.sasi.utils.AbstractIterator;
+ import org.apache.cassandra.index.sasi.utils.CombinedValue;
+ import org.apache.cassandra.index.sasi.utils.RangeIterator;
+ 
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ import com.google.common.collect.PeekingIterator;
+ 
+@@ -95,7 +95,7 @@ public class KeyRangeIterator extends RangeIterator<Long, Token>
+ 
+         public LongSet getOffsets()
+         {
+-            LongSet offsets = new LongOpenHashSet(4);
++            LongSet offsets = new LongHashSet(4);
+             for (DecoratedKey key : keys)
+                 offsets.add((long) key.getToken().getTokenValue());
+ 
+@@ -126,4 +126,4 @@ public class KeyRangeIterator extends RangeIterator<Long, Token>
+             return keys.iterator();
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/test/unit/org/apache/cassandra/index/sasi/disk/TokenTreeTest.java b/test/unit/org/apache/cassandra/index/sasi/disk/TokenTreeTest.java
+index 927e165..ace0368 100644
+--- a/test/unit/org/apache/cassandra/index/sasi/disk/TokenTreeTest.java
++++ b/test/unit/org/apache/cassandra/index/sasi/disk/TokenTreeTest.java
+@@ -47,7 +47,7 @@ import junit.framework.Assert;
+ import org.junit.BeforeClass;
+ import org.junit.Test;
+ import org.apache.commons.lang3.builder.HashCodeBuilder;
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ import com.carrotsearch.hppc.cursors.LongCursor;
+ import com.google.common.base.Function;
+@@ -62,12 +62,12 @@ public class TokenTreeTest
+         DatabaseDescriptor.daemonInitialization();
+     }
+ 
+-    static LongSet singleOffset = new LongOpenHashSet() {{ add(1); }};
+-    static LongSet bigSingleOffset = new LongOpenHashSet() {{ add(2147521562L); }};
+-    static LongSet shortPackableCollision = new LongOpenHashSet() {{ add(2L); add(3L); }}; // can pack two shorts
+-    static LongSet intPackableCollision = new LongOpenHashSet() {{ add(6L); add(((long) Short.MAX_VALUE) + 1); }}; // can pack int & short
+-    static LongSet multiCollision =  new LongOpenHashSet() {{ add(3L); add(4L); add(5L); }}; // can't pack
+-    static LongSet unpackableCollision = new LongOpenHashSet() {{ add(((long) Short.MAX_VALUE) + 1); add(((long) Short.MAX_VALUE) + 2); }}; // can't pack
++    static LongSet singleOffset = new LongHashSet() {{ add(1); }};
++    static LongSet bigSingleOffset = new LongHashSet() {{ add(2147521562L); }};
++    static LongSet shortPackableCollision = new LongHashSet() {{ add(2L); add(3L); }}; // can pack two shorts
++    static LongSet intPackableCollision = new LongHashSet() {{ add(6L); add(((long) Short.MAX_VALUE) + 1); }}; // can pack int & short
++    static LongSet multiCollision =  new LongHashSet() {{ add(3L); add(4L); add(5L); }}; // can't pack
++    static LongSet unpackableCollision = new LongHashSet() {{ add(((long) Short.MAX_VALUE) + 1); add(((long) Short.MAX_VALUE) + 2); }}; // can't pack
+ 
+     final static SortedMap<Long, LongSet> simpleTokenMap = new TreeMap<Long, LongSet>()
+     {{
+@@ -601,7 +601,7 @@ public class TokenTreeTest
+ 
+     private static LongSet convert(long... values)
+     {
+-        LongSet result = new LongOpenHashSet(values.length);
++        LongSet result = new LongHashSet(values.length);
+         for (long v : values)
+             result.add(v);
+ 
+@@ -632,7 +632,7 @@ public class TokenTreeTest
+         {{
+                 for (long i = minToken; i <= maxToken; i++)
+                 {
+-                    LongSet offsetSet = new LongOpenHashSet();
++                    LongSet offsetSet = new LongHashSet();
+                     offsetSet.add(i);
+                     put(i, offsetSet);
+                 }
+diff --git a/test/unit/org/apache/cassandra/index/sasi/utils/LongIterator.java b/test/unit/org/apache/cassandra/index/sasi/utils/LongIterator.java
+index 205d28f..e7ff5b8 100644
+--- a/test/unit/org/apache/cassandra/index/sasi/utils/LongIterator.java
++++ b/test/unit/org/apache/cassandra/index/sasi/utils/LongIterator.java
+@@ -23,7 +23,7 @@ import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.List;
+ 
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ import org.apache.cassandra.db.DecoratedKey;
+ import org.apache.cassandra.index.sasi.disk.Token;
+@@ -84,7 +84,7 @@ public class LongIterator extends RangeIterator<Long, Token>
+         @Override
+         public LongSet getOffsets()
+         {
+-            return new LongOpenHashSet(4);
++            return new LongHashSet(4);
+         }
+ 
+         @Override
+diff --git a/test/unit/org/apache/cassandra/index/sasi/utils/RangeIntersectionIteratorTest.java b/test/unit/org/apache/cassandra/index/sasi/utils/RangeIntersectionIteratorTest.java
+index 4dc9e3f..e796240 100644
+--- a/test/unit/org/apache/cassandra/index/sasi/utils/RangeIntersectionIteratorTest.java
++++ b/test/unit/org/apache/cassandra/index/sasi/utils/RangeIntersectionIteratorTest.java
+@@ -27,7 +27,7 @@ import org.apache.cassandra.index.sasi.utils.RangeIntersectionIterator.LookupInt
+ import org.apache.cassandra.index.sasi.utils.RangeIntersectionIterator.BounceIntersectionIterator;
+ import org.apache.cassandra.io.util.FileUtils;
+ 
+-import com.carrotsearch.hppc.LongOpenHashSet;
++import com.carrotsearch.hppc.LongHashSet;
+ import com.carrotsearch.hppc.LongSet;
+ 
+ import org.junit.Assert;
+@@ -387,7 +387,7 @@ public class RangeIntersectionIteratorTest
+             for (int i = 0; i < ranges.length; i++)
+             {
+                 int rangeSize = random.nextInt(16, 512);
+-                LongSet range = new LongOpenHashSet(rangeSize);
++                LongSet range = new LongHashSet(rangeSize);
+ 
+                 for (int j = 0; j < rangeSize; j++)
+                     range.add(random.nextLong(0, 100));
+-- 
+2.9.4
+

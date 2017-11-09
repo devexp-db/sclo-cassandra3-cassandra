@@ -1,0 +1,26 @@
+From 0f11542d6bb9284bbc4b7975185c33de93022aac Mon Sep 17 00:00:00 2001
+From: Tomas Repik <trepik@redhat.com>
+Date: Wed, 12 Jul 2017 13:29:03 +0200
+Subject: [PATCH] add two more parameters for SubstituteLogger constructor in
+ slf4j
+
+---
+ test/unit/org/apache/cassandra/utils/NoSpamLoggerTest.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/unit/org/apache/cassandra/utils/NoSpamLoggerTest.java b/test/unit/org/apache/cassandra/utils/NoSpamLoggerTest.java
+index 702fa98..fe5d58e 100644
+--- a/test/unit/org/apache/cassandra/utils/NoSpamLoggerTest.java
++++ b/test/unit/org/apache/cassandra/utils/NoSpamLoggerTest.java
+@@ -39,7 +39,7 @@ public class NoSpamLoggerTest
+ {
+     Map<Level, Queue<Pair<String, Object[]>>> logged = new HashMap<>();
+ 
+-   Logger mock = new SubstituteLogger(null)
++   Logger mock = new SubstituteLogger(null, null, true)
+    {
+ 
+        @Override
+-- 
+2.9.4
+
