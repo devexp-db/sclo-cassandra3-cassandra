@@ -1,0 +1,22 @@
+--- build/cassandra-parent-3.11.1.pom.orig	2018-02-08 12:49:52.402744774 +0100
++++ build/cassandra-3.11.1-parent.pom	2018-02-08 12:46:03.319389593 +0100
+@@ -219,7 +219,7 @@
+       <dependency>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+-        <version>18.0</version>
++        <version>24.0</version>
+       </dependency>
+       <dependency>
+         <groupId>org.hdrhistogram</groupId>
+--- build/cassandra-all-3.11.1.pom.orig	2018-02-08 12:49:34.152557146 +0100
++++ build/cassandra-3.11.1.pom	2018-02-08 12:46:13.272491919 +0100
+@@ -222,7 +222,7 @@
+     <dependency>
+       <groupId>com.google.guava</groupId>
+       <artifactId>guava</artifactId>
+-      <version>18.0</version>
++      <version>24.0</version>
+     </dependency>
+     <dependency>
+       <groupId>commons-cli</groupId>

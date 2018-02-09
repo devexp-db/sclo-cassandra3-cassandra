@@ -11,8 +11,8 @@
 %global daemon_name %{?scl_prefix}%{pkg_name}
 
 Name:		%{?scl_prefix}cassandra
-Version:	3.11.0
-Release:	1%{?dist}
+Version:	3.11.1
+Release:	3%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -43,6 +43,12 @@ Patch5:		%{pkg_name}-%{version}-slf4j.patch
 # remove thrift as it will be removed in next upstream major release
 # https://github.com/apache/cassandra/commit/4881d9c308ccd6b5ca70925bf6ebedb70e7705fc
 Patch7:		%{pkg_name}-%{version}-remove-thrift.patch
+# https://issues.apache.org/jira/projects/CASSANDRA/issues/CASSANDRA-14173
+Patch8:         %{pkg_name}-%{version}-Remove-dependencies-on-internal-JMX-classes.patch
+# use Guava v24 because in Fedora 28 is not available v18
+Patch9:         %{pkg_name}-%{version}-use-guava24.patch
+# change mvn dependency to guava v24
+Patch10:        %{pkg_name}-%{version}-use-guava24-pom.patch
 
 # TODO
 #BuildArchitectures:	noarch
@@ -237,6 +243,13 @@ mkdir build
 cp -p %{SOURCE3} build/%{pkg_name}-%{version}.pom
 cp -p %{SOURCE4} build/%{pkg_name}-%{version}-parent.pom
 
+%if 0%{?fedora} >= 28
+# swap guava18 to guava24
+%patch9 -p1
+# change mvn dependency to guava v24
+%patch10 -p0
+%endif
+
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 set -e -x
 # build jar repositories for dependencies
@@ -319,6 +332,8 @@ build-jar-repository lib atinject
 %patch3 -p1
 # slf4j patch
 %patch5 -p1
+# internal JMX classes remove patch
+%patch8 -p1
 
 # remove hadoop
 rm -r src/java/org/apache/cassandra/hadoop
@@ -336,6 +351,9 @@ sed -i '/hadoop/d' test/microbench/org/apache/cassandra/test/microbench/Compacti
 %pom_remove_dep -r com.thinkaurelius.thrift:thrift-server build/%{pkg_name}-%{version}.pom
 %pom_remove_dep -r org.apache.cassandra:cassandra-thrift build/%{pkg_name}-%{version}.pom
 %pom_remove_dep -r org.apache.thrift:libthrift build/%{pkg_name}-%{version}.pom
+
+# fix antlr dependency (remove antlr as a runtime dependency, just antlr-runtime is needed for that)
+%pom_xpath_inject "pom:dependency[pom:artifactId='antlr']" "<scope>provided</scope>" build/%{pkg_name}-%{version}.pom
 
 %mvn_package "org.apache.%{pkg_name}:%{pkg_name}-parent:pom:%{version}" parent
 %if %stress
@@ -500,7 +518,19 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
-* Wed Nov 09 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.11.0-1
+* Wed Feb 07 2018 Jakub Janco <jjanco@redhat.com> - 3.11.1-3
+- use guava v24 in f28, Remove dependencies on internal JMX classes
+
+* Tue Feb 06 2018 Augusto Caringi <acaringi@redhat.com> - 3.11.1-2
+- fix antlr dependency (remove antlr as a runtime dependency)
+
+* Tue Jan 09 2018 Jakub Janco <jjanco@redhat.com> - 3.11.1-1
+- new version
+
+* Mon Dec 11 2017 Augusto Caringi <acaringi@redhat.com> - 3.11.0-6
+- fix nodetool classpath dependency, added netty/netty-all
+
+* Thu Nov 09 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.11.0-1
 - Update to 3.11.0
 
 * Fri Nov 03 2017 Augusto Mecking Caringi <acaringi@redhat.com> - 3.9-16

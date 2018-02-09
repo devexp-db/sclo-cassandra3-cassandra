@@ -1,0 +1,95 @@
+From d01e77671f318594d58b6018922c47fe74f4d609 Mon Sep 17 00:00:00 2001
+From: Jakub Janco <jjanco@redhat.com>
+Date: Thu, 8 Feb 2018 11:09:24 +0100
+Subject: [PATCH] guava>=20 compatibility Fedora 28 only contains guava v20 and
+ v24 package
+
+---
+ build.xml                                                      |   3 +-
+ src/java/org/apache/cassandra/repair/RepairJob.java            | 4 ++--
+ src/java/org/apache/cassandra/repair/RepairRunnable.java       | 6 +++---
+ src/java/org/apache/cassandra/service/ActiveRepairService.java | 2 +-
+
+diff --git a/build.xml b/build.xml
+index c65721116dc..17cab5d01c9 100644
+--- a/build.xml
++++ b/build.xml
+@@ -360,7 +360,8 @@
+           <dependency groupId="org.xerial.snappy" artifactId="snappy-java" version="1.1.1.7"/>
+           <dependency groupId="net.jpountz.lz4" artifactId="lz4" version="1.3.0"/>
+           <dependency groupId="com.ning" artifactId="compress-lzf" version="0.8.4"/>
+-          <dependency groupId="com.google.guava" artifactId="guava" version="18.0"/>
++          <dependency groupId="com.google.guava" artifactId="guava" version="24.0-jre"/>
++          <dependency groupId="com.google.j2objc" artifactId="j2objc-annotations" version="1.3"/>
+           <dependency groupId="org.hdrhistogram" artifactId="HdrHistogram" version="2.1.9"/>
+           <dependency groupId="commons-cli" artifactId="commons-cli" version="1.1"/>
+           <dependency groupId="commons-codec" artifactId="commons-codec" version="1.9"/>
+diff --git a/src/java/org/apache/cassandra/repair/RepairJob.java b/src/java/org/apache/cassandra/repair/RepairJob.java
+index d52c7763ac..81e431975d 100644
+--- a/src/java/org/apache/cassandra/repair/RepairJob.java
++++ b/src/java/org/apache/cassandra/repair/RepairJob.java
+@@ -83,7 +83,7 @@ public class RepairJob extends AbstractFuture<RepairResult> implements Runnable
+             }
+             // When all snapshot complete, send validation requests
+             ListenableFuture<List<InetAddress>> allSnapshotTasks = Futures.allAsList(snapshotTasks);
+-            validations = Futures.transform(allSnapshotTasks, new AsyncFunction<List<InetAddress>, List<TreeResponse>>()
++            validations = Futures.transformAsync(allSnapshotTasks, new AsyncFunction<List<InetAddress>, List<TreeResponse>>()
+             {
+                 public ListenableFuture<List<TreeResponse>> apply(List<InetAddress> endpoints)
+                 {
+@@ -101,7 +101,7 @@ public class RepairJob extends AbstractFuture<RepairResult> implements Runnable
+         }
+ 
+         // When all validations complete, submit sync tasks
+-        ListenableFuture<List<SyncStat>> syncResults = Futures.transform(validations, new AsyncFunction<List<TreeResponse>, List<SyncStat>>()
++        ListenableFuture<List<SyncStat>> syncResults = Futures.transformAsync(validations, new AsyncFunction<List<TreeResponse>, List<SyncStat>>()
+         {
+             public ListenableFuture<List<SyncStat>> apply(List<TreeResponse> trees)
+             {
+diff --git a/src/java/org/apache/cassandra/repair/RepairRunnable.java b/src/java/org/apache/cassandra/repair/RepairRunnable.java
+index c9eed548ce..59f6cdab01 100644
+--- a/src/java/org/apache/cassandra/repair/RepairRunnable.java
++++ b/src/java/org/apache/cassandra/repair/RepairRunnable.java
+@@ -288,7 +288,7 @@ public class RepairRunnable extends WrappedRunnable implements ProgressEventNoti
+         final Collection<Range<Token>> successfulRanges = new ArrayList<>();
+         final AtomicBoolean hasFailure = new AtomicBoolean();
+         final ListenableFuture<List<RepairSessionResult>> allSessions = Futures.successfulAsList(futures);
+-        ListenableFuture anticompactionResult = Futures.transform(allSessions, new AsyncFunction<List<RepairSessionResult>, Object>()
++        ListenableFuture anticompactionResult = Futures.transformAsync(allSessions, new AsyncFunction<List<RepairSessionResult>, Object>()
+         {
+             @SuppressWarnings("unchecked")
+             public ListenableFuture apply(List<RepairSessionResult> results)
+@@ -307,7 +307,7 @@ public class RepairRunnable extends WrappedRunnable implements ProgressEventNoti
+                 }
+                 return ActiveRepairService.instance.finishParentSession(parentSession, allNeighbors, successfulRanges);
+             }
+-        });
++        }, MoreExecutors.directExecutor());
+         Futures.addCallback(anticompactionResult, new FutureCallback<Object>()
+         {
+             public void onSuccess(Object result)
+@@ -355,7 +355,7 @@ public class RepairRunnable extends WrappedRunnable implements ProgressEventNoti
+                 }
+                 executor.shutdownNow();
+             }
+-        });
++        }, MoreExecutors.directExecutor());
+     }
+ 
+     private void addRangeToNeighbors(List<Pair<Set<InetAddress>, ? extends Collection<Range<Token>>>> neighborRangeList, Range<Token> range, Set<InetAddress> neighbors)
+diff --git a/src/java/org/apache/cassandra/service/ActiveRepairService.java b/src/java/org/apache/cassandra/service/ActiveRepairService.java
+index fea690e1aa..01ed5f0193 100644
+--- a/src/java/org/apache/cassandra/service/ActiveRepairService.java
++++ b/src/java/org/apache/cassandra/service/ActiveRepairService.java
+@@ -183,7 +183,7 @@ public class ActiveRepairService implements IEndpointStateChangeSubscriber, IFai
+                 failureDetector.unregisterFailureDetectionEventListener(task);
+                 gossiper.unregister(task);
+             }
+-        }, MoreExecutors.sameThreadExecutor());
++        }, MoreExecutors.directExecutor());
+     }
+ 
+     public synchronized void terminateSessions()
+-- 
+2.14.3
+
