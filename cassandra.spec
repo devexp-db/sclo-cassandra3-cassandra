@@ -12,7 +12,7 @@
 
 Name:		%{?scl_prefix}cassandra
 Version:	3.11.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Client utilities for %{pkg_name}
 # Apache (v2.0) BSD (3 clause):
 # ./src/java/org/apache/cassandra/utils/vint/VIntCoding.java
@@ -405,6 +405,7 @@ install -p -D -m 755 conf/%{pkg_name}-env.sh %{buildroot}%{_datadir}/%{pkg_name}
 install -p -D -m 644 conf/%{pkg_name}.yaml %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}.yaml
 install -p -D -m 644 conf/%{pkg_name}-jaas.config %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}-jaas.config
 install -p -D -m 644 conf/%{pkg_name}-topology.properties %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}-topology.properties
+install -p -D -m 644 conf/%{pkg_name}-rackdc.properties %{buildroot}%{_sysconfdir}/%{pkg_name}/%{pkg_name}-rackdc.properties
 install -p -D -m 644 conf/jvm.options %{buildroot}%{_sysconfdir}/%{pkg_name}/jvm.options
 install -p -D -m 644 conf/logback-tools.xml %{buildroot}%{_sysconfdir}/%{pkg_name}/logback-tools.xml
 install -p -D -m 644 conf/logback.xml %{buildroot}%{_sysconfdir}/%{pkg_name}/logback.xml
@@ -490,6 +491,7 @@ exit 0
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}.yaml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}-jaas.config
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}-topology.properties
+%config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/%{pkg_name}-rackdc.properties
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/jvm.options
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/logback-tools.xml
 %config(noreplace) %attr(644, %{pkg_name}, %{pkg_name}) %{_sysconfdir}/%{pkg_name}/logback.xml
@@ -518,6 +520,9 @@ exit 0
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Wed May 02 2018 Augusto Caringi <acaringi@redhat.com> - 3.11.1-4
+- add cassandra-rackdc.properties conf file to ease multi-node configuration
+
 * Wed Feb 07 2018 Jakub Janco <jjanco@redhat.com> - 3.11.1-3
 - use guava v24 in f28, Remove dependencies on internal JMX classes
 
